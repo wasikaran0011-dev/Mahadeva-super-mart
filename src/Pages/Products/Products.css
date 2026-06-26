@@ -1,0 +1,153 @@
+.search-page{
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 30px 24px 60px;
+}
+
+.products-heading {
+  margin-bottom: 28px;
+}
+
+.products-heading h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.products-heading p {
+  margin-top: 8px;
+  color: #666;
+  font-size: 14px;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: clamp(2rem,4vw,3rem);
+}
+
+.product-card {
+  background: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: 0.3s ease;
+}
+
+.product-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+.product-image-wrapper {
+  height: 220px;
+  background: #fafafa;
+  overflow: hidden;
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.product-content {
+  padding: 16px;
+}
+
+.product-content h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.product-content p {
+  margin-top: 8px;
+  color: #666;
+  font-size: 13px;
+  line-height: 1.5;
+  min-height: 40px;
+}
+
+.product-footer {
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.product-price {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.product-btn {
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    background: #e53935;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.product-btn:hover {
+    opacity: 0.9;
+}
+
+.products-loading,
+.products-empty {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.products-empty h2 {
+  margin-bottom: 10px;
+}
+
+.products-empty p {
+  color: #666;
+}
+
+@media (max-width: 1024px) {
+
+  .products-grid {
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: clamp(1.75rem,3vw,2.5rem);
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .search-page {
+    padding: 20px 16px 40px;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: clamp(1.5rem,2vw,2rem);
+  }
+
+  .product-image-wrapper {
+    height: 180px;
+  }
+
+}
+
+@media (max-width: 480px) {
+
+  .products-grid {
+    grid-template-columns: 1fr;
+    margin-top: clamp(1.25rem,1.75vw,1.75rem);
+  }
+
+  .products-heading h1 {
+    font-size: 24px;
+  }
+
+}

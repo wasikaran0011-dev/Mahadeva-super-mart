@@ -1,0 +1,79 @@
+.homepage {
+  min-height: 100vh;
+  width: 100%;
+  background: #f8f8f8;
+}
+
+.homeContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(24px, 3vw, 40px);
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.navigation-bar {
+  margin-top: 12px;
+  margin-bottom: 14px;
+}
+
+.hero-banner-section,
+.features-bar-section,
+.featured-categories-section {
+  margin-top: 18px;
+}
+
+@media screen and (max-width: 1024px) {
+  .homeContent {
+    padding: clamp(18px, 4vw, 28px);
+    gap: 30px;
+  }
+
+  .navigation-bar {
+    margin-top: 10px;
+    margin-bottom: 16px;
+  }
+
+  .hero-banner-section,
+  .features-bar-section,
+  .featured-categories-section {
+    margin-top: 18px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .homeContent {
+    padding: clamp(16px, 5vw, 24px);
+    gap: 24px;
+  }
+
+  .navigation-bar {
+    margin-top: 8px;
+    margin-bottom: 14px;
+  }
+
+  .hero-banner-section,
+  .features-bar-section,
+  .featured-categories-section {
+    margin-top: 16px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .homeContent {
+    padding: 16px 14px;
+    gap: 22px;
+  }
+
+  .navigation-bar {
+    margin-top: 6px;
+    margin-bottom: 12px;
+  }
+
+  .hero-banner-section,
+  .features-bar-section,
+  .featured-categories-section {
+    margin-top: 14px;
+  }
+}

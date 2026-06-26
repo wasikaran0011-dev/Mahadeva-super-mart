@@ -1,0 +1,63 @@
+.user-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 1100;
+  width: 200px;
+  padding: 8px;
+  background-color: var(--white);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: var(--radius-md);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+}
+
+.user-menu:hover .user-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-item {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 12px 10px;
+  overflow: hidden;
+  color: var(--text-dark);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.dropdown-item::after {
+  position: absolute;
+  bottom: 7px;
+  left: 10px;
+  width: 0;
+  height: 2px;
+  content: '';
+  background-color: var(--primary-red);
+  transition: width 0.25s ease;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus-visible {
+  color: var(--primary-red);
+  background-color: rgba(229, 57, 53, 0.07);
+  outline: none;
+}
+
+.dropdown-item:hover::after,
+.dropdown-item:focus-visible::after {
+  width: calc(100% - 20px);
+}

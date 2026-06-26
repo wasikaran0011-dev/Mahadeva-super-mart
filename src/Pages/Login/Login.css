@@ -1,0 +1,357 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; font-family: inter, sans-serif;
+}
+
+.loginPage {
+    min-height: 100vh;
+    background: url('../../assets/Wavy-Background.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.overlay {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.contentWrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: auto; 
+    display: grid;
+    grid-template-columns: minmax(300px, 1fr) minmax(320px, 440px);
+    align-items: center;
+    gap: clamp(40px, 8vw, 160px);
+}
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+}
+
+.logo img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.loginCard {
+    background: rgba(255,255,255,1);
+    padding: 35px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 14px; 
+    margin-right: 0;
+    width: 100%;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08); 
+}
+
+.userIcon {
+    margin: 14px 30px;
+    font-size: 30px;
+    border: 2px solid rgba(0,0,0,0.3);
+    border-radius: 50%;
+    padding: 10px;
+    display: flex;
+    align-items: center; justify-content: center; 
+    color: #F7C99E;
+    height: 40px;
+    width: 40px;
+}
+
+.loginForm {
+    width: 100%;
+}
+
+.loginForm h3 {
+    font-size: clamp(1.5rem, 3vw, 1.8rem);
+    text-decoration: underline; font-weight: 600;
+    margin-bottom: 10px;
+    text-align: center
+}
+
+.subtitle {
+    color: #999;
+    font-size: 13px;
+    text-align: center;
+    margin-bottom: 18px;
+}
+
+.loginInputs, .loginBox {
+    display: grid;
+    margin: 10px 12px;
+}
+
+.loginBox {
+    position: relative; 
+    margin-bottom: clamp(1.2rem, 3vw, 1.7rem );
+}
+
+.loginInput {
+    width: 100%;
+    padding: clamp(0.7rem, 2vw, 0.75rem) 2.5rem clamp(0.5rem, 1vw, 0.5rem) 0.5rem;
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    border: 1px solid #dcdcdc;
+    background: transparent;
+    border-radius: 5px;
+    outline: none; 
+}
+
+.loginLabel {
+    position: absolute;
+    top: 50%;
+    left: 0.5rem;
+    transform: translateY(-50%);
+    font-size: clamp(0.85rem, 1.6vw, 1rem);
+    color: black;
+    border-radius: 10px;
+    pointer-events: none;
+    transition: 0.2s ease-in-out;
+    padding: 0 0.3rem;
+    background: #fff;
+    z-index: 1;
+}
+
+.loginIcon {
+    position: absolute;
+    right: clamp(0.5rem, 1.5vw, 0.75rem);
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(0,0,0,0.5);
+    font-size: clamp(1rem, 1.7vw, 1.1rem);
+    cursor: pointer;
+}
+
+.loginInput:focus+.loginLabel,
+.loginInput:not(:placeholder-shown)+.loginLabel {
+    top: 0.1rem;
+    left: 0.7rem;
+    font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+}
+
+.loginCheck {
+    margin-bottom: clamp(0.5rem, 2vw, 1rem);
+}
+
+.loginCheck, .checkBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+    gap: 6px;
+}
+ 
+.checkInput {
+    width: 1rem;
+    height: 1rem;
+    margin-bottom: 0.2rem;
+    accent-color: #e53935;
+    cursor: pointer;
+}
+
+.loginForgot {
+    color: rgba(0,0,0,0.8);
+}
+
+.loginForgot:hover {
+    text-decoration: underline;
+    cursor: pointer;
+    color: #e53935;
+    transition: .5s;    
+}
+
+.loginBtn {
+    width: 100%;
+    padding: clamp(0.7rem, 2vw, 0.8rem);
+    margin-bottom: 1rem;
+    background: #e53935;
+    border: none;
+    color: rgba(255,255,255,1);
+    border-radius: clamp(0.3rem, 2vw, 0.5rem);
+    font-weight: 600; 
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    cursor: pointer;
+}
+
+.loginBtn:hover {
+    opacity: 0.9;
+}
+
+.loginBtn:disabled {
+    opacity:.7;
+    cursor: not-allowed;
+}
+
+.loginInput:focus {
+    border-color: #e53935;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #888;
+    font-size: 14px;
+    margin: 20px 0;
+}
+
+.socialLoginSection {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    justify-content: center;
+    gap: 35px;
+    padding: 12px;
+    max-width: 280px;
+    width: 100%;
+}
+
+.socialBtn {
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    background: rgba(0,0,0,0.8);
+    color: rgba(255,255,255,0.8);
+    font-weight: 500;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.socialBtn:hover {
+    cursor: pointer;
+    opacity: 0.9;
+}
+
+.svg {
+    font-size: 20px;
+}
+
+.errorMsg{
+    color:#dc2626;
+    font-size:14px;
+    margin-bottom:12px;
+    text-align:center;
+}
+
+.noAccountSection {
+    margin: 15px 0;
+    width: 100%;
+    text-align: center;
+    font-size: clamp(0.8rem, 2vw, 1.1rem);
+}
+
+.signUpLink {
+    color: rgba(0,0,0,0.8);
+}
+
+.signUpLink:hover {
+    color:#e53935;
+    text-decoration: underline;
+    transition: .5s;
+    cursor: pointer;
+}
+
+
+@media(max-width: 992px) {
+    .contentWrapper {
+        grid-template-columns: 1fr;
+        gap: 36px;
+        width: 100%;
+    }
+    .logo {
+        justify-content: center;
+        padding: 0;
+    }
+    .logo img {
+        width: min(90vw, 360px);
+        height: auto;
+    }
+    .loginCard {
+        width: 100%;
+        max-width: 450px;
+        margin: 0 auto;
+    }
+    .loginInputs {
+        margin: 0;
+    }
+}
+
+@media(max-width: 768px) {
+    .overlay {
+        padding: 16px;
+    }
+    .contentWrapper {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    .logo {
+        margin: 0;
+    }
+    .logo img {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+    }
+    .loginCard {
+        width: 100%;
+        max-width: 100%;
+        padding: 24px;
+        margin: 0;
+    }
+    .loginInputs {
+        margin: 0;
+    }
+}
+
+@media(max-width: 480px) {
+    .overlay{
+        padding: 12px;
+    }
+    .loginCard {
+        padding: 20px;
+    }
+    .logo img {
+        width: 100%;
+        max-width: 240px;
+        height: auto;
+    }
+    .loginCheck {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    .loginBtn {
+        width: 100%;
+    }
+}
+
+@media(max-width: 320px) {
+    .overlay{
+        padding: 8px;
+    }
+    .loginCard {
+        padding: 14px;
+    }
+    .userIcon {
+        height: 35px;
+        width: 35px;
+    }
+    .loginForm h3 {
+        font-size: 1.3rem;
+    }
+    .logo img {
+        max-width: 180px;
+    }
+}

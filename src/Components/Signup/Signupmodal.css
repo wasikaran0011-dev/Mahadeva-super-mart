@@ -1,0 +1,209 @@
+.signupOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+.signupModal {
+    background: #fff;
+    width: 100%;
+    max-width: 450px;
+    border-radius: 14px;
+    padding: 35px;
+    position: relative;
+    box-shadow: 0 8px 24px rgba(0,0,0,.08);
+}
+
+.signupCloseBtn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    border: none;
+    background: transparent;
+    font-size: 26px;
+    cursor: pointer;
+}
+
+.signupIcon {
+    margin: 14px auto;
+    font-size: 30px;
+    border: 2px solid rgba(0,0,0,.3);
+    border-radius: 50%;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #F7C99E;
+    height: 50px;
+    width: 50px;
+}
+
+.signupModal h2 {
+    text-align: center;
+    font-size: clamp(1.5rem,3vw,1.8rem);
+    text-decoration: underline;
+    margin-bottom: 10px;
+}
+
+.signupSubtitle {
+    color: #999;
+    text-align: center;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.signupForm {
+    width: 100%;
+}
+
+.signupInputBox {
+    position: relative;
+    margin-bottom: clamp(1.2rem,3vw,1.7rem);
+}
+
+.signupInput {
+    width: 100%;
+    padding: clamp(0.7rem,2vw,0.75rem)
+             2.5rem
+             clamp(0.5rem,1vw,0.5rem)
+             0.5rem;
+
+    font-size: clamp(0.9rem,2vw,1rem);
+
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+    background: transparent;
+    outline: none;
+}
+
+.signupLabel {
+    position: absolute;
+    top: 50%;
+    left: .5rem;
+    transform: translateY(-50%);
+    font-size: clamp(.85rem,1.6vw,1rem);
+    background: #fff;
+    padding: 0 .3rem;
+    transition: .2s ease-in-out;
+    pointer-events: none;
+}
+
+.signupInput:focus + .signupLabel,
+.signupInput:not(:placeholder-shown) + .signupLabel {
+    top: .1rem;
+    left: .7rem;
+    font-size: .85rem;
+}
+
+.signupInputIcon {
+    position: absolute;
+    right: .75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(0,0,0,.5);
+}
+
+.signupInput:focus {
+    border-color: #e53935;
+}
+
+.signupBtn {
+    width: 100%;
+    padding: .8rem;
+    border: none;
+    border-radius: .5rem;
+    background: #e53935;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.signupBtn:hover {
+    opacity: .9;
+}
+
+.signupEmail {
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.otpExpiry {
+    text-align: center;
+    color: #dc2626;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.otpAttempts {
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.otpContainer {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.otpBox {
+    width: 48px;
+    height: 52px;
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 20px;
+    outline: none;
+}
+
+.otpBox:focus {
+    border-color: #e53935;
+}
+
+.resendBtn,
+.changeEmailBtn {
+    width: 100%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    margin-top: 12px;
+}
+
+.resendBtn {
+    color: #e53935;
+    font-weight: 600;
+}
+
+.changeEmailBtn {
+    color: #666;
+}
+
+.resendBtn:hover,
+.changeEmailBtn:hover {
+    text-decoration: underline;
+}
+
+@media(max-width:480px) {
+
+    .signupModal {
+        padding: 20px;
+    }
+
+    .otpContainer {
+        gap: 6px;
+    }
+
+    .otpBox {
+        width: 42px;
+        height: 48px;
+    }
+}

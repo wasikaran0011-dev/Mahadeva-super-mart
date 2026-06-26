@@ -1,0 +1,138 @@
+/* FOOTER STYLES */
+.main-footer {
+  background-color: var(--text-dark);
+  color: #d1d1d1;
+  padding: 60px 24px 30px 24px;
+  margin-top: 40px;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2.2fr 1fr 1.2fr 1.6fr;
+  gap: 40px;
+}
+
+.footer-brand-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon-wrapper.mini {
+  background-color: var(--primary-red);
+  color: var(--white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 6px;
+  box-shadow: none;
+}
+
+.footer-brand-title {
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--white);
+  letter-spacing: -0.5px;
+}
+
+.footer-desc {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #aaaaaa;
+}
+
+.footer-copyright {
+  font-size: 0.75rem;
+  color: #777777;
+  margin-top: auto;
+}
+
+.footer-links-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.footer-header {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--white);
+  position: relative;
+  padding-bottom: 6px;
+}
+
+.footer-header::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 30px;
+  background-color: var(--accent-orange);
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-links a {
+  font-size: 0.85rem;
+  color: #aaaaaa;
+  transition: var(--transition-smooth);
+}
+
+.footer-links a:hover {
+  color: var(--primary-red);
+  padding-left: 5px;
+}
+
+.footer-contact-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.footer-info {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #aaaaaa;
+}
+
+.footer-info strong {
+  color: var(--white);
+}
+
+/* RESPONSIVE FOOTER */
+
+/* TABLET VIEW */
+@media screen and (max-width: 1024px) {
+  .footer-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+  
+  .footer-copyright {
+    margin-top: 16px;
+  }
+}
+
+/* SMARTPHONE VIEW */
+@media screen and (max-width: 480px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
