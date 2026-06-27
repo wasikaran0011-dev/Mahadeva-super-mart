@@ -47,9 +47,9 @@ const Footer = () => {
         {/* Contact Column */}
         <div className="footer-contact-col">
           <h4 className="footer-header">Get In Touch</h4>
-          <p className="footer-info"><strong>Address:</strong> KPHB Colony, Kukatpally, Hyderabad, TS, 500072</p>
-          <p className="footer-info"><strong>Phone:</strong> +91 98765 43210</p>
-          <p className="footer-info"><strong>Email:</strong> support@mahadevasupermart.com</p>
+          <p className="footer-info"><strong>Address:</strong> Sapthagiri Colony, Karimnagar.</p>
+          <p className="footer-info"><strong>Phone:</strong> +91 8686969980</p>
+          <p className="footer-info"><strong>Email:</strong> mahadevasupermartstore2@gmail.com</p>
         </div>
       </div>
     </footer>
