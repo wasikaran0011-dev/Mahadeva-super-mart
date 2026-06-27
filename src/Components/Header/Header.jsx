@@ -18,7 +18,9 @@ const Header = () => {
   const [ isInputFocused,setIsInputFocused ] = useState(false);
   const [ suggestions,setSuggestions ] = useState([]);
   const [ isSearching,setIsSearching ] = useState(false);
+  const [ showDropdown,setShowDropdown ] = useState(false);
   const searchRef = useRef(null);
+  const dropdownRef = useRef(null);
 
   const shouldShowSuggestions = isInputFocused && searchTerm.trim().length >= 2 && suggestions.length > 0;
 
@@ -96,6 +98,20 @@ const Header = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const dropdownOutsideClick = (event) => {
+      if(dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", dropdownOutsideClick);
+
+    return () => {
+      document.removeEventListener("mousedown", dropdownOutsideClick);
+    }
+  }, []);
+
   const cartCount  = cartItems.reduce((total,item) => total+item.quantity, 0);
 
   const handleSearch = (event) => {
@@ -103,6 +119,8 @@ const Header = () => {
     setIsInputFocused(false);
     navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
   };
+
+  console.log('ShowDropdown: ', showDropdown);
 
   return (
     <header className="main-header" id="main-header">
@@ -177,7 +195,8 @@ const Header = () => {
 
         {/* Right: User Actions */}
         <div className="header-actions">
-          <div className="action-item user-menu" id="login-link" aria-label="Login or Sign up">
+          <div className="action-item user-menu" id="login-link" onClick={() => setShowDropdown(prev => !prev)}
+           aria-label="Login or Sign up" ref={dropdownRef}>
             <div className="action-icon-wrapper">
               <svg className="action-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -185,7 +204,12 @@ const Header = () => {
               </svg>
             </div>
             <span className="action-text">{userName ? userName : 'Login / SignUp'}</span>
-            <UserDropdown />
+
+            {
+              showDropdown && (
+                <UserDropdown onClose={() => setShowDropdown(false)} />
+              )
+            }
           </div>
 
           <Link to="/Cart" className="action-item" id="cart-link" aria-label={`View shopping cart, ${cartCount} items`}>

@@ -1,6 +1,6 @@
 import './App.css';
 import Login from './Pages/Login/Login.jsx';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { supabase } from './Services/supabase.js';
 import Home from './Pages/Home/Home.jsx';
@@ -10,9 +10,11 @@ import Cart from './Pages/Cart/Cart.jsx';
 import Products from './Pages/Products/Products.jsx';
 import SearchResults from './Pages/SearchResults/SearchResults.jsx';
 import ProductDetails from './Pages/ProductDetails/ProductDetails.jsx';
+import MyOrders from './Pages/MyOrders/MyOrders.jsx';
 
 function App() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [ session, setSession ] = useState(null);
   const [ loading,setLoading ] = useState(true);
 
@@ -36,8 +38,8 @@ function App() {
     } = supabase.auth.onAuthStateChange((event, session) => {
       console.log(event);
       setSession(session);
-      if (event === 'SIGNED_IN') {
-        navigate('/Home', { replace: true });
+      if(event === "SIGNED_IN" && location.pathname === '/') {
+          navigate('/Home', { replace: true });
       }
       if(event === "SIGNED_OUT") {
         navigate('/');
@@ -47,7 +49,7 @@ function App() {
     return () => {
       subscription.unsubscribe();
     };
-  }, [navigate]);
+  }, [navigate, location.pathname]);
 
   if(loading) {
     return <div
@@ -81,6 +83,11 @@ function App() {
         <ProtectedRoute session={session} loading={loading}>
           <ProductDetails />
         </ProtectedRoute>
+      } />
+      <Route path='/my-orders' element = {
+          <ProtectedRoute session={session} loading={loading}>
+            <MyOrders />
+          </ProtectedRoute>
       } />
     </Routes>
     </>

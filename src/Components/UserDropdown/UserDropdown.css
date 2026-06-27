@@ -1,24 +1,14 @@
 .user-dropdown {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  z-index: 1100;
-  width: 200px;
-  padding: 8px;
-  background-color: var(--white);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: var(--radius-md);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(10px);
-  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
-}
-
-.user-menu:hover .user-dropdown {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+    position:absolute;
+    top:calc(100% + 8px);
+    right:0;
+    z-index:1100;
+    width:200px;
+    padding:8px;
+    background:#fff;
+    border:1px solid rgba(0,0,0,.08);
+    border-radius:12px;
+    box-shadow:0 12px 28px rgba(0,0,0,.14);
 }
 
 .dropdown-item {
