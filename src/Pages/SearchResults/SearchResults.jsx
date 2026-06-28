@@ -5,6 +5,7 @@ import Navbar from '../../Components/Navbar/Navbar';
 import Footer from '../../Components/Footer/Footer';
 import { useCart } from '../../Context/Cartcontext';
 import { searchProducts } from '../../Services/productServices';
+import { getPriceDetails } from '../../Utils/priceUtils';
 
 import './SearchResults.css';
 
@@ -118,19 +119,38 @@ const SearchResults = () => {
 
                     <div className="product-content">
 
-                      <h3>
+                      <div className="product-rating-row">
+                        <span className="product-rating">⭐ {product.rating || "4.5"}</span>
+                        <span className={`stock-status ${product.status?.toLowerCase() === "out of stock" ? "out" : "in"}`}>
+                          {product.status || "In Stock"}
+                        </span>
+                      </div>
+
+                      <h3 className="product-title">
                         {product.title}
                       </h3>
 
-                      <p>
+                      <p className="product-description">
                         {product.description}
                       </p>
 
-                      <div className="product-footer">
-
-                        <span className="product-price">
-                          ₹{product.price}
-                        </span>
+                      {(() => {
+                        const { hasDiscount, mrp, savings } = getPriceDetails(product.price, product.original_price);
+                        console.log(`[Pricing Debug] ${product.title} - Price: ${product.price}, MRP: ${product.original_price}, Discount Valid: ${hasDiscount}`);
+                        return (
+                          <div className="product-price-section">
+                            <span className="product-price">
+                              ₹{product.price}
+                            </span>
+                            {hasDiscount && (
+                              <div className='price-meta'>
+                                <span className="old-price">₹{mrp}</span>
+                                <span className="save-amount">Save ₹{savings}</span>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })()}
 
                         <button
                           className="product-btn"
@@ -141,8 +161,6 @@ const SearchResults = () => {
                         >
                           Add To Cart
                         </button>
-
-                      </div>
 
                     </div>
 

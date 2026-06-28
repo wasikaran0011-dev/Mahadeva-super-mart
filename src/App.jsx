@@ -11,6 +11,8 @@ import Products from './Pages/Products/Products.jsx';
 import SearchResults from './Pages/SearchResults/SearchResults.jsx';
 import ProductDetails from './Pages/ProductDetails/ProductDetails.jsx';
 import MyOrders from './Pages/MyOrders/MyOrders.jsx';
+import OrderDetails from './Pages/OrderDetails/OrderDetails.jsx';
+import MyAccount from './Pages/MyAccount/MyAccount.jsx';
 
 function App() {
   const navigate = useNavigate();
@@ -87,6 +89,16 @@ function App() {
       <Route path='/my-orders' element = {
           <ProtectedRoute session={session} loading={loading}>
             <MyOrders />
+          </ProtectedRoute>
+      } />
+      <Route path='/my-account' element = {
+          <ProtectedRoute session={session} loading={loading}>
+            <MyAccount />
+          </ProtectedRoute>
+      } />
+      <Route path='/order/:orderId' element = {
+          <ProtectedRoute session={session} loading={loading}>
+            <OrderDetails />
           </ProtectedRoute>
       } />
     </Routes>

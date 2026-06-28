@@ -64,3 +64,20 @@ export const getOrderById = async(orderId) => {
 
     return data;
 };
+
+export const getOrderDetails = async(orderId, userId) => {
+    const { data,error } = await supabase
+    .from('orders')
+    .select(`*, orderitems(*, Products(id, title, image, brand, weight))`)
+    .eq('id', orderId)
+    .eq('user_id', userId)
+    .single();
+
+    if(error) {
+        // PGRST116 = no rows found (not a fatal error)
+        if(error.code === 'PGRST116') return null;
+        throw error;
+    }
+
+    return data;
+};

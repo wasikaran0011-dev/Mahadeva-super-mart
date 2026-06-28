@@ -6,6 +6,7 @@ import Navbar from '../../Components/Navbar/Navbar';
 import Footer from '../../Components/Footer/Footer';
 import './ProductDetails.css';
 import { getProductById } from '../../Services/productServices';
+import { getPriceDetails } from '../../Utils/priceUtils';
 import { useCart } from '../../Context/Cartcontext';
 import toast from 'react-hot-toast';
 
@@ -86,21 +87,24 @@ const ProductDetails = () => {
 
             </div>
 
-          <div className='product-price-section'>
-            <h2 className='product-price'>₹{Product.price}</h2>
+          {(() => {
+            const { hasDiscount, mrp, savings } = getPriceDetails(Product.price, Product.original_price);
+            console.log(`[Pricing Debug] ${Product.title} - Price: ${Product.price}, MRP: ${Product.original_price}, Discount Valid: ${hasDiscount}`);
+            return (
+              <div className='product-price-section'>
+                <h2 className='product-price'>₹{Product.price}</h2>
 
-            <div className='price-meta'>
-              <span className='old-price'>
-                ₹{Math.round(Product.price * 1.18)}
-              </span>
-              <span className='discount-badge'>
-                18% OFF
-              </span>
-            </div>
+                {hasDiscount && (
+                  <div className='price-meta'>
+                    <span className='old-price'>₹{mrp}</span>
+                    <span className='save-amount'>Save ₹{savings}</span>
+                  </div>
+                )}
 
-            <p className='tax-text'>Inclusive of All Taxes</p>
-
-          </div>
+                <p className='tax-text'>Inclusive of All Taxes</p>
+              </div>
+            );
+          })()}
 
           <div className='offer-card'>
             <h4>Available Offers</h4>

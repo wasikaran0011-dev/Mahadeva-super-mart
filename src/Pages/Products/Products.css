@@ -195,7 +195,7 @@
   font-weight: 500;
 }
 
-.discount {
+.save-amount {
   font-size: 0.95rem;
   font-weight: 600;
   color: #2e7d32;
@@ -250,7 +250,7 @@
   }
 
   .old-price,
-  .discount{
+  .save-amount{
     font-size:.85rem;
   }
 
@@ -335,7 +335,7 @@
     font-size:.78rem;
   }
 
-  .discount{
+  .save-amount{
     font-size:.75rem;
   }
 
@@ -423,7 +423,7 @@
     font-size:.7rem;
   }
 
-  .discount{
+  .save-amount{
     font-size:.65rem;
   }
 

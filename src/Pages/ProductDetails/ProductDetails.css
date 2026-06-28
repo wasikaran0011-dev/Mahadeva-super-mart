@@ -125,12 +125,9 @@
     font-size:1rem;
 }
 
-.discount-badge{
-    background:#e8f5e9;
+.save-amount{
     color:#2e7d32;
-    padding:4px 10px;
-    border-radius:30px;
-    font-size:.8rem;
+    font-size:.95rem;
     font-weight:600;
 }
 

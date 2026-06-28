@@ -1,0 +1,781 @@
+/* ============================================================
+   ORDER DETAILS PAGE
+   Breakpoints match the rest of the project:
+   – 1024px (tablet)
+   – 768px  (portrait tablet / large mobile)
+   – 480px  (small mobile)
+   ============================================================ */
+
+.od-page {
+    box-sizing: border-box;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 32px 24px 72px;
+}
+
+.od-page *,
+.od-page *::before,
+.od-page *::after {
+    box-sizing: border-box;
+}
+
+/* ── BREADCRUMB ──────────────────────────────────────────── */
+
+.od-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 28px;
+    font-size: 0.88rem;
+}
+
+.od-breadcrumb-link {
+    color: #d32f2f;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.od-breadcrumb-link:hover {
+    color: #b71c1c;
+    text-decoration: underline;
+}
+
+.od-breadcrumb-sep {
+    color: #bbb;
+    user-select: none;
+}
+
+.od-breadcrumb-current {
+    color: #666;
+    font-weight: 500;
+}
+
+/* ── PAGE LAYOUT ─────────────────────────────────────────── */
+
+.od-layout {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+.od-col-left,
+.od-col-right {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ── BASE CARD ───────────────────────────────────────────── */
+
+.od-card {
+    background: #fff;
+    border: 1px solid #e9e9e9;
+    border-radius: 18px;
+    padding: 24px;
+}
+
+.od-card-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 20px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.od-card-title-icon {
+    font-size: 1.1rem;
+    line-height: 1;
+}
+
+.od-card-title-count {
+    margin-left: auto;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: #888;
+}
+
+/* ── ORDER INFO CARD ─────────────────────────────────────── */
+
+.od-info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.od-order-id {
+    margin: 0 0 6px;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.od-order-date {
+    margin: 0;
+    color: #888;
+    font-size: 0.88rem;
+}
+
+/* ── STATUS BADGE ────────────────────────────────────────── */
+
+.od-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 16px;
+    border-radius: 30px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.od-status-badge.delivered {
+    background: #e9f8ee;
+    color: #1e7e34;
+}
+
+.od-status-badge.pending {
+    background: #fff8e1;
+    color: #e65100;
+}
+
+.od-status-badge.cancelled {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.od-status-badge.processing {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+.od-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.od-status-badge.delivered .od-status-dot   { background: #2e7d32; }
+.od-status-badge.pending .od-status-dot     { background: #e65100; }
+.od-status-badge.cancelled .od-status-dot   { background: #c62828; }
+.od-status-badge.processing .od-status-dot  { background: #1565c0; }
+
+/* ── INFO DIVIDER ────────────────────────────────────────── */
+
+.od-info-divider {
+    height: 1px;
+    background: #f0f0f0;
+    margin: 20px 0;
+}
+
+/* ── INFO META GRID ──────────────────────────────────────── */
+
+.od-info-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.od-info-meta-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.od-meta-label {
+    color: #888;
+    font-size: 0.88rem;
+}
+
+.od-meta-value {
+    color: #1a1a1a;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: right;
+}
+
+.od-meta-total {
+    color: #d32f2f;
+    font-size: 1.05rem;
+}
+
+/* ── INVOICE BUTTON ──────────────────────────────────────── */
+
+.od-info-actions {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.od-btn-invoice {
+    width: 100%;
+    border: 1px solid #e0e0e0;
+    background: #fafafa;
+    color: #555;
+    padding: 10px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.88rem;
+    font-weight: 600;
+    transition: background 0.2s ease, border-color 0.2s ease,
+                color 0.2s ease;
+}
+
+.od-btn-invoice:hover {
+    background: #fff0f0;
+    border-color: #d32f2f;
+    color: #d32f2f;
+}
+
+/* ── DELIVERY ADDRESS CARD ───────────────────────────────── */
+
+.od-address-body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.od-address-name {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.od-address-phone {
+    margin: 0;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.od-location-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #d32f2f;
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    margin-top: 4px;
+    transition: color 0.2s ease;
+}
+
+.od-location-link:hover {
+    color: #b71c1c;
+    text-decoration: underline;
+}
+
+.od-delivery-notes {
+    margin: 8px 0 0;
+    color: #777;
+    font-size: 0.86rem;
+    font-style: italic;
+    line-height: 1.5;
+}
+
+/* ── NEED HELP CARD ──────────────────────────────────────── */
+
+.od-help-card .od-card-title {
+    margin-bottom: 8px;
+}
+
+.od-help-text {
+    margin: 0 0 16px;
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
+.od-help-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.od-btn-help {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 16px;
+    border-radius: 9px;
+    font-size: 0.86rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+    background: #d32f2f;
+    color: #fff;
+    border: 1px solid #d32f2f;
+}
+
+.od-btn-help:hover {
+    background: #b71c1c;
+    border-color: #b71c1c;
+    transform: translateY(-1px);
+}
+
+.od-btn-help-outline {
+    background: transparent;
+    color: #d32f2f;
+}
+
+.od-btn-help-outline:hover {
+    background: #fff0f0;
+    border-color: #b71c1c;
+    color: #b71c1c;
+}
+
+/* ── PRODUCTS CARD ───────────────────────────────────────── */
+
+.od-products-header {
+    display: grid;
+    grid-template-columns: 1fr 52px 80px 80px;
+    gap: 8px;
+    padding: 0 12px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    color: #999;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+
+.od-products-header span:nth-child(2),
+.od-products-header span:nth-child(3),
+.od-products-header span:nth-child(4) {
+    text-align: right;
+}
+
+.od-products-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.od-product-row {
+    display: grid;
+    grid-template-columns: 1fr 52px 80px 80px;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 12px;
+    border-bottom: 1px solid #f7f7f7;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    border-radius: 10px;
+}
+
+.od-product-row:last-child {
+    border-bottom: none;
+}
+
+.od-product-row:hover {
+    background: #fafafa;
+}
+
+.od-product-info {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+}
+
+.od-product-img-wrap {
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    border: 1px solid #efefef;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.od-product-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.od-product-img-placeholder {
+    width: 100%;
+    height: 100%;
+    background: #f4f4f4;
+    color: #aaa;
+    font-size: 1.1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.od-product-details {
+    min-width: 0;
+}
+
+.od-product-name {
+    margin: 0 0 3px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.od-product-brand,
+.od-product-weight {
+    margin: 0;
+    font-size: 0.78rem;
+    color: #999;
+    line-height: 1.4;
+}
+
+.od-product-qty {
+    text-align: right;
+    font-size: 0.9rem;
+    color: #555;
+    font-weight: 500;
+}
+
+.od-product-price {
+    text-align: right;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.od-product-subtotal {
+    text-align: right;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+/* ── BILL SUMMARY ────────────────────────────────────────── */
+
+.od-bill-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #555;
+    padding: 8px 0;
+}
+
+.od-bill-free {
+    color: #1e7e34;
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+.od-bill-divider {
+    height: 1px;
+    background: #f0f0f0;
+    margin: 6px 0;
+}
+
+.od-bill-total-row {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.od-bill-total-row span:last-child {
+    color: #d32f2f;
+    font-size: 1.1rem;
+}
+
+.od-bill-tax-note {
+    margin: 8px 0 0;
+    color: #bbb;
+    font-size: 0.78rem;
+    text-align: right;
+}
+
+/* ── PAYMENT INFO ────────────────────────────────────────── */
+
+.od-payment-body {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.od-payment-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.od-payment-label {
+    color: #888;
+    font-size: 0.88rem;
+}
+
+.od-payment-value {
+    color: #1a1a1a;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: right;
+}
+
+.od-payment-status {
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    text-align: right;
+}
+
+.od-payment-status.paid {
+    background: #e9f8ee;
+    color: #1e7e34;
+}
+
+.od-payment-status.pending {
+    background: #fff8e1;
+    color: #e65100;
+}
+
+.od-payment-status.failed {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.od-payment-status.refunded {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+/* ── NOT FOUND ───────────────────────────────────────────── */
+
+.od-not-found {
+    background: #fff;
+    border: 1px solid #ececec;
+    border-radius: 18px;
+    padding: 80px 32px;
+    text-align: center;
+}
+
+.od-not-found-icon {
+    font-size: 56px;
+    line-height: 1;
+    margin-bottom: 20px;
+}
+
+.od-not-found h2 {
+    margin: 0 0 12px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.od-not-found p {
+    max-width: 380px;
+    margin: 0 auto 28px;
+    color: #777;
+    font-size: 0.93rem;
+    line-height: 1.7;
+}
+
+.od-btn-primary {
+    border: none;
+    background: #d32f2f;
+    color: #fff;
+    padding: 13px 30px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.93rem;
+    font-weight: 600;
+    transition: background 0.25s ease, transform 0.2s ease,
+                box-shadow 0.25s ease;
+}
+
+.od-btn-primary:hover {
+    background: #b71c1c;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(211, 47, 47, 0.22);
+}
+
+/* ── LOADING SKELETON ────────────────────────────────────── */
+
+.od-skeleton-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.od-skeleton-line {
+    border-radius: 8px;
+    background: #ebebeb;
+    animation: odSkeletonPulse 1.5s ease-in-out infinite;
+}
+
+.od-product-skeleton-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid #f7f7f7;
+}
+
+.od-skeleton-img {
+    width: 64px;
+    height: 64px;
+    border-radius: 10px;
+    background: #ebebeb;
+    flex-shrink: 0;
+    animation: odSkeletonPulse 1.5s ease-in-out infinite;
+}
+
+.od-skeleton-text-block {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.od-skeleton-summary-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f7f7f7;
+}
+
+.od-skeleton-summary-row:last-child {
+    border-bottom: none;
+}
+
+@keyframes odSkeletonPulse {
+    0%, 100% { opacity: 0.5; }
+    50%       { opacity: 1; }
+}
+
+/* ── RESPONSIVE: TABLET (≤ 1024px) ──────────────────────── */
+
+@media (max-width: 1024px) {
+    .od-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .od-col-left {
+        order: 1;
+    }
+
+    .od-col-right {
+        order: 2;
+    }
+}
+
+/* ── RESPONSIVE: PORTRAIT TABLET / LARGE MOBILE (≤ 768px) ── */
+
+@media (max-width: 768px) {
+    .od-page {
+        padding: 24px 16px 56px;
+    }
+
+    .od-products-header {
+        display: none;
+    }
+
+    .od-product-row {
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto;
+        gap: 6px;
+        padding: 14px 8px;
+    }
+
+    .od-product-info {
+        grid-column: 1 / -1;
+    }
+
+    .od-product-qty {
+        text-align: left;
+        font-size: 0.82rem;
+        color: #888;
+    }
+
+    .od-product-qty::before { content: 'Qty: '; }
+
+    .od-product-price {
+        text-align: left;
+        font-size: 0.82rem;
+    }
+
+    .od-product-subtotal {
+        text-align: right;
+    }
+
+    .od-info-header {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .od-info-meta-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .od-meta-value {
+        text-align: left;
+    }
+}
+
+/* ── RESPONSIVE: SMALL MOBILE (≤ 480px) ─────────────────── */
+
+@media (max-width: 480px) {
+    .od-page {
+        padding: 20px 12px 48px;
+    }
+
+    .od-card {
+        padding: 18px;
+        border-radius: 14px;
+    }
+
+    .od-order-id {
+        font-size: 1.1rem;
+    }
+
+    .od-help-actions {
+        flex-direction: column;
+    }
+
+    .od-btn-help {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .od-payment-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .od-payment-status {
+        text-align: left;
+    }
+}
+
+/* ── PRINT STYLES ────────────────────────────────────────── */
+
+@media print {
+    .od-page {
+        padding: 0;
+    }
+    .od-breadcrumb,
+    .od-help-card,
+    .od-btn-invoice,
+    .od-btn-primary {
+        display: none;
+    }
+}

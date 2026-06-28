@@ -6,6 +6,7 @@ import Navbar from '../../Components/Navbar/Navbar';
 import Footer from '../../Components/Footer/Footer';
 import { useNavigate } from 'react-router-dom';
 import { getProductsByCategory } from '../../Services/productServices';
+import { getPriceDetails } from '../../Utils/priceUtils';
 
 import './Products.css';
 
@@ -83,13 +84,21 @@ const Products = () => {
     <h3 className="product-title">{product.title}</h3>
     <p className="product-description">{product.description}</p>
 
-    <div className="product-price-section">
-        <span className="product-price" >₹{product.price}</span>
-      <div className='price-meta'>
-        <span className="old-price">₹{Math.round(product.price * 1.18)}</span>
-        <span className="discount">18% OFF</span>
-      </div>
-    </div>
+    {(() => {
+      const { hasDiscount, mrp, savings } = getPriceDetails(product.price, product.original_price);
+      console.log(`[Pricing Debug] ${product.title} - Price: ${product.price}, MRP: ${product.original_price}, Discount Valid: ${hasDiscount}`);
+      return (
+        <div className="product-price-section">
+          <span className="product-price">₹{product.price}</span>
+          {hasDiscount && (
+            <div className='price-meta'>
+              <span className="old-price">₹{mrp}</span>
+              <span className="save-amount">Save ₹{savings}</span>
+            </div>
+          )}
+        </div>
+      );
+    })()}
 
     <button className="product-btn" onClick={(e)=>{
             e.stopPropagation();

@@ -1,4 +1,5 @@
 import React, { useMemo, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Cart.css';
 import Header from '../../Components/Header/Header.jsx';
 import Navbar from '../../Components/Navbar/Navbar.jsx';
@@ -14,6 +15,7 @@ const DEFAULT_DELIVERY_CHARGE = 0;
 const PACKAGING_CHARGE = 15;
 
 function Cart() {
+  const navigate = useNavigate();
   const {
     cartItems: cart,
     addToCart,
@@ -203,7 +205,7 @@ const [placingOrder, setPlacingOrder] = React.useState(false);
         toast.error('Please Enter Your Name', 'error');
         return false;
     }
-    if(customerName.trim() < 3) {
+    if(customerName.trim().length < 3) {
       toast.error("Name should be more than 3 characters", 'error');
       return;
     }
@@ -242,9 +244,21 @@ const [placingOrder, setPlacingOrder] = React.useState(false);
     if(!isValid) {
       return;
     }
+    
+    setPlacingOrder(true);
+    
     try {
       const { data:{ user } } = await supabase.auth.getUser();
-      console.log(user); 
+      if (!user) {
+        toast.error('Please login again.');
+        setPlacingOrder(false);
+        return;
+      }
+      // Calculate estimated delivery date (3-5 business days)
+      const deliveryDate = new Date();
+      deliveryDate.setDate(deliveryDate.getDate() + 4); // roughly 4 days
+      const estimatedDelivery = deliveryDate.toISOString().split('T')[0];
+
       const order = await createOrder({
         user_id: user.id,
         customer_name: customerName,
@@ -252,21 +266,31 @@ const [placingOrder, setPlacingOrder] = React.useState(false);
         location_link: locationLink,
         delivery_notes: deliveryNotes,
         payment_method: paymentMethod,
+        subtotal: subtotal,
+        delivery_charge: deliveryCharge,
+        packaging_charge: packagingCharge,
+        discount: discountValue,
         total_amount: totalAmount,
+        payment_status: paymentMethod === 'COD' ? 'Pending' : 'Paid',
+        order_status: 'Pending',
+        estimated_delivery_date: estimatedDelivery,
       });
 
       console.log(cart);
       const orderItems =  cart.map(item => ({
         order_id: order.id,
         product_id: item.id,
-        product_name: item.title,
+        product_name: item.title || item.name || 'Unknown Product',
+        product_image: item.image || item.image_url || '',
+        product_brand: item.brand || '',
+        product_weight: item.weight || '',
         quantity: item.quantity,
-        price: item.price,
+        price_at_purchase: item.price, // using price_at_purchase as per prompt priority 2
+        price: item.price, // keeping price as well for backward compatibility
+        subtotal: item.price * item.quantity,
       }))
-      console.log(orderItems);
       await createOrderItems(orderItems);
 
-      console.log(order);
       toast.success('order Placed');
       clearCart();
       setIsCheckoutModalOpen(false);
@@ -276,9 +300,13 @@ const [placingOrder, setPlacingOrder] = React.useState(false);
       setDeliveryNotes('');
       setPaymentMethod('COD');
       sessionStorage.removeItem('checkoutForm');
+      
+      navigate('/my-orders');
     } catch (error) {
-      console.error(error);
+      console.error('Failed to create order items:', error);
       toast.error('Failed to save order');
+    } finally {
+      setPlacingOrder(false);
     }
   };
 
@@ -371,7 +399,7 @@ const [placingOrder, setPlacingOrder] = React.useState(false);
               </div>
 
               <div className="cart-footer-actions">
-                <button className="btn-outline" onClick={() => showToast('Redirecting to Grocery catalog...', 'info')}>
+                <button className="btn-outline" onClick={() => { showToast('Redirecting to Grocery catalog...', 'info'); navigate('/Home'); }}>
                   <i className="fa-solid fa-arrow-left"></i> Continue Shopping
                 </button>
                 <button className="btn-outline btn-clear" onClick={handleClearCart}>
@@ -457,7 +485,7 @@ const [placingOrder, setPlacingOrder] = React.useState(false);
                 <button type="button" className="btn-primary" onClick={() => setIsCheckoutModalOpen(true)}>
                   <i className="fa-solid fa-credit-card"></i> Proceed to Checkout
                 </button>
-                <button type="button" className="btn-coupon">
+                <button type="button" className="btn-coupon" onClick={() => setIsCouponModalOpen(true)}>
                   <i className="fa-solid fa-ticket"></i> Apply Coupon
                 </button>
               </div>
@@ -517,24 +545,24 @@ const [placingOrder, setPlacingOrder] = React.useState(false);
 
     <div className='modal-body'>
     <input type='text' placeholder='Enter Full Name' value={customerName} onChange = {(e) => setCustomerName(e.target.value)}
-        className='modal-input' />
+        className='modal-input' disabled={placingOrder} />
     <input type='tel' placeholder='Mobile Number' value={phone} onChange={(e) => setPhone(e.target.value)} 
-        className='modal-input' />
+        className='modal-input' disabled={placingOrder} />
     <input type='url' className='modal-input' placeholder='Google Map Location Link' value={locationLink}
-        onChange={(e) => setLocationLink(e.target.value)} />
+        onChange={(e) => setLocationLink(e.target.value)} disabled={placingOrder} />
     <textarea className='modal-input' placeholder='Delivery Notes (Optional)' value={deliveryNotes} 
-        onChange={(e) => setDeliveryNotes(e.target.value)} />
+        onChange={(e) => setDeliveryNotes(e.target.value)} disabled={placingOrder} />
 
       <div className="payments-method-section">
         <h4>Payment Method</h4>
         <label className='payment-option'>
           <input type='radio' name='payment' value='COD' checked={paymentMethod === 'COD'}
-            onChange={(e) => setPaymentMethod(e.target.value)} />
+            onChange={(e) => setPaymentMethod(e.target.value)} disabled={placingOrder} />
             Cash on Delivery
         </label>
         <label className='payment-option'>
           <input type='radio' name='payment' value='ONLINE' checked={paymentMethod === 'ONLINE'}
-            onChange={(e) => setPaymentMethod(e.target.value)} />
+            onChange={(e) => setPaymentMethod(e.target.value)} disabled={placingOrder} />
             Online Payemnt
         </label>
       </div>
@@ -547,8 +575,10 @@ const [placingOrder, setPlacingOrder] = React.useState(false);
 
       
    <div className='modal-footer'>
-    <button className='btn-outline' onClick={() => setIsCheckoutModalOpen(false)} >Cancel</button>
-    <button className='btn-primary' onClick={handlePlaceOrder}>Place Order</button>
+    <button className='btn-outline' onClick={() => setIsCheckoutModalOpen(false)} disabled={placingOrder}>Cancel</button>
+    <button className='btn-primary' onClick={handlePlaceOrder} disabled={placingOrder} aria-busy={placingOrder}>
+      {placingOrder ? 'Processing...' : 'Place Order'}
+    </button>
    </div>
    </div>
   </div>
