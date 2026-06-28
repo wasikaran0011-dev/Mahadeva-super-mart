@@ -294,18 +294,18 @@
 }
 
 .stat-icon-wrapper.orders {
-  background: rgba(255, 152, 0, 0.1);
+  background: rgba(255, 152, 0, 0.12);
   color: var(--accent-orange);
 }
 
 .stat-icon-wrapper.products {
-  background: rgba(33, 150, 243, 0.1);
-  color: #2196f3;
+  background: rgba(229, 57, 53, 0.08);
+  color: var(--primary-red);
 }
 
 .stat-icon-wrapper.spent {
-  background: rgba(76, 175, 80, 0.1);
-  color: #4caf50;
+  background: rgba(39, 174, 96, 0.1);
+  color: #27ae60;
 }
 
 .stat-content {
@@ -374,13 +374,13 @@
 }
 
 .action-card-icon.cart {
-  background: rgba(76, 175, 80, 0.08);
-  color: #4caf50;
+  background: rgba(255, 152, 0, 0.1);
+  color: var(--accent-orange);
 }
 
 .action-card-icon.shopping {
-  background: rgba(33, 150, 243, 0.08);
-  color: #2196f3;
+  background: rgba(229, 57, 53, 0.05);
+  color: var(--primary-red-hover);
 }
 
 .quick-action-card span {

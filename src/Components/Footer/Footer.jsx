@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import './Footer.css';
 
 const Footer = () => {
@@ -26,10 +27,10 @@ const Footer = () => {
         <div className="footer-links-col">
           <h4 className="footer-header">Quick Links</h4>
           <ul className="footer-links">
-            <li><a href="#about-us">About Us</a></li>
-            <li><a href="#shop-grocery">Shop Grocery</a></li>
-            <li><a href="#offers">Special Offers</a></li>
-            <li><a href="#contact">Contact Support</a></li>
+            <li><Link to="/about-us">About Us</Link></li>
+            <li><Link to="/Home">Shop Grocery</Link></li>
+            <li><Link to="/Home">Special Offers</Link></li>
+            <li><Link to="/contact-us">Contact Support</Link></li>
           </ul>
         </div>
 
@@ -37,9 +38,9 @@ const Footer = () => {
         <div className="footer-links-col">
           <h4 className="footer-header">Customer Service</h4>
           <ul className="footer-links">
-            <li><a href="#terms">Terms & Conditions</a></li>
+            <li><a href="#terms">Terms &amp; Conditions</a></li>
             <li><a href="#privacy">Privacy Policy</a></li>
-            <li><a href="#delivery">Delivery & Refund Policy</a></li>
+            <li><a href="#delivery">Delivery &amp; Refund Policy</a></li>
             <li><a href="#faq">FAQ</a></li>
           </ul>
         </div>
@@ -48,8 +49,8 @@ const Footer = () => {
         <div className="footer-contact-col">
           <h4 className="footer-header">Get In Touch</h4>
           <p className="footer-info"><strong>Address:</strong> Sapthagiri Colony, Karimnagar.</p>
-          <p className="footer-info"><strong>Phone:</strong> +91 8686969980</p>
-          <p className="footer-info"><strong>Email:</strong> mahadevasupermartstore2@gmail.com</p>
+          <p className="footer-info"><strong>Phone:</strong> <a href="tel:+918686969980" className="footer-contact-link">+91 8686969980</a></p>
+          <p className="footer-info"><strong>Email:</strong> <a href="mailto:mahadevasupermartstore2@gmail.com" className="footer-contact-link">mahadevasupermartstore2@gmail.com</a></p>
         </div>
       </div>
     </footer>

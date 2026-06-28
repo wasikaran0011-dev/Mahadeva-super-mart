@@ -331,9 +331,9 @@ const [placingOrder, setPlacingOrder] = React.useState(false);
                 <h2>Your Cart is Empty</h2>
                 <p>Browse products and add fresh items from the recommendations below!</p>
               </div>
-              <button 
-                className="btn-primary" 
-                onClick={scrollRecommendations} 
+              <button
+                className="btn-primary"
+                onClick={() => navigate('/Home#featured-categories')}
                 style={{ width: 'auto', padding: '12px 30px' }}
               >
                 <i className="fa-solid fa-basket-shopping"></i> Browse Products

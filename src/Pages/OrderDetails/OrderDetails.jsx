@@ -8,11 +8,10 @@ import { supabase } from '../../Services/supabase.js';
 import { getOrderDetails } from '../../Services/orderServices.js';
 import { formatDate, formatRupee, getStatusClass, getStatusLabel, getPaymentStatusLabel, getPaymentMethodLabel } from '../../Utils/orderUtils.js';
 
-// Configuration object for support contact details (Priority 9)
+// Real store contact details
 const SUPPORT_CONFIG = {
-    email: 'support@mahadevasupermart.com',
-    phone: '+91-8000000000',
-    whatsapp: '+91-8000000000'
+    email: 'mahadevasupermartstore2@gmail.com',
+    phone: '+918686969980',
 };
 
 const OrderDetails = () => {

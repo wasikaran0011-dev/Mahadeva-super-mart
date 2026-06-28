@@ -1,19 +1,15 @@
-import React, { useState,useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
-import { useNavigate } from 'react-router-dom';
 import { getCategories } from '../../Services/categoryServices.js';
 
-
 const Navbar = () => {
-
   const navigate = useNavigate();
   const [activeItem, setActiveItem] = useState('Home');
   const [categories, setCategories] = useState([]);
 
-
   useEffect(() => {
-    const loadCategories = async() => {
+    const loadCategories = async () => {
       const data = await getCategories();
       setCategories(data || []);
     };
@@ -28,28 +24,28 @@ const Navbar = () => {
     {
       name: 'Categories',
       isDropdown: true,
-      dropdownItems: categories
+      dropdownItems: categories,
     },
     {
-      name: 'Offers'
+      name: 'Offers',
     },
     {
-      name: 'New Arrivals'
+      name: 'New Arrivals',
     },
     {
-      name: 'About Us'
+      name: 'About Us',
+      to: '/about-us',
     },
     {
-      name: 'Contact Us'
-    }
+      name: 'Contact Us',
+      to: '/contact-us',
+    },
   ];
 
   return (
     <nav className="navigation-bar">
       <ul className="nav-menu">
-
         {menuItems.map((item) => {
-
           if (item.isDropdown) {
             return (
               <li
@@ -73,13 +69,15 @@ const Navbar = () => {
                 <ul className="dropdown-menu">
                   {item.dropdownItems.map((dropItem) => (
                     <li key={dropItem.id}>
-                      <a href="#" 
-                          onClick={(e) => {
-                            e.preventDefault();
-                            console.log(dropItem);
-                            navigate(`/products/${dropItem.id}`)
-                          }}
-                           >{dropItem.name}</a>
+                      <a
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          navigate(`/products/${dropItem.id}`);
+                        }}
+                      >
+                        {dropItem.name}
+                      </a>
                     </li>
                   ))}
                 </ul>
@@ -90,9 +88,7 @@ const Navbar = () => {
           return (
             <li
               key={item.name}
-              className={`nav-item ${
-                activeItem === item.name ? 'active' : ''
-              }`}
+              className={`nav-item ${activeItem === item.name ? 'active' : ''}`}
             >
               {item.to ? (
                 <Link
