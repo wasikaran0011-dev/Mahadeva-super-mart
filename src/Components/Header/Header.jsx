@@ -53,37 +53,69 @@ const Header = () => {
       setSearchTerm(query);
     }, [location.search])
 
+  const fetchProfileName = async (userId) => {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('full_name')
+        .eq('id', userId)
+        .single();
+      if (!error && data) {
+        return data.full_name;
+      }
+    } catch (err) {
+      console.error('Error fetching name from profiles:', err);
+    }
+    return null;
+  };
+
   useEffect(() => {
     const getCurrentUser = async () => {
-
-    try {
-      const { data:{ user } } = 
-      await supabase.auth.getUser();
-
-      if(user) {
-        const fullName = user.user_metadata?.full_name?.trim();
-        setUserName(fullName?.split(/\s+/)[0] || user.email || null);
+      try {
+        const { data:{ user } } = await supabase.auth.getUser();
+        if(user) {
+          const dbName = await fetchProfileName(user.id);
+          const fullName = dbName || user.user_metadata?.full_name || '';
+          setUserName(fullName.trim().split(/\s+/)[0] || user.email || null);
+        }
+      } catch(error) {
+        console.error("Failed to load user", error);
       }
-    } catch(error) {
-      console.error("Failed to load user", error);
-    }
-  }
-  getCurrentUser();
-}, []);
+    };
+    getCurrentUser();
+  }, []);
 
   useEffect(() => {
-    const { data: authListener } = supabase.auth.onAuthStateChange((event,session) => {
+    const handleProfileUpdate = async () => {
+      try {
+        const { data:{ user } } = await supabase.auth.getUser();
+        if(user) {
+          const dbName = await fetchProfileName(user.id);
+          const fullName = dbName || user.user_metadata?.full_name || '';
+          setUserName(fullName.trim().split(/\s+/)[0] || user.email || null);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    window.addEventListener('profile-updated', handleProfileUpdate);
+
+    const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
       const user = session?.user;
       if(user) {
-        const fullName = user.user_metadata?.full_name?.trim();
-        setUserName(fullName?.split(/\s+/)[0] || user.email); 
+        const dbName = await fetchProfileName(user.id);
+        const fullName = dbName || user.user_metadata?.full_name || '';
+        setUserName(fullName.trim().split(/\s+/)[0] || user.email); 
       } else {
         setUserName(null);
       }
-  });
-  return () => {
-    authListener.subscription.unsubscribe();
-  };
+    });
+
+    return () => {
+      authListener.subscription.unsubscribe();
+      window.removeEventListener('profile-updated', handleProfileUpdate);
+    };
   }, []);
 
   useEffect(() => {
@@ -207,7 +239,7 @@ const Header = () => {
 
             {
               showDropdown && (
-                <UserDropdown onClose={() => setShowDropdown(false)} />
+                <UserDropdown onClose={() => setShowDropdown(false)} userName={userName} />
               )
             }
           </div>

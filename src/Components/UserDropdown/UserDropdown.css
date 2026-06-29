@@ -51,3 +51,13 @@
 .dropdown-item:focus-visible::after {
   width: calc(100% - 20px);
 }
+
+.user-dropdown-greeting {
+  padding: 8px 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-dark, #333);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  margin-bottom: 6px;
+  word-break: break-all;
+}

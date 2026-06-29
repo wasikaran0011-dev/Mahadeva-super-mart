@@ -9,9 +9,8 @@ import { FaMinus, FaPlus, FaTrash } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import { createOrder,createOrderItems } from '../../Services/orderServices.js';
 import { supabase } from '../../Services/supabase.js';
+import { useStoreSettings } from '../../Context/StoreSettingsContext.jsx';
 
-const FREE_DELIVERY_THRESHOLD = 1000;
-const DEFAULT_DELIVERY_CHARGE = 0;
 const PACKAGING_CHARGE = 15;
 
 function Cart() {
@@ -23,6 +22,10 @@ function Cart() {
     removeFromCart,
     clearCart
   } = useCart();
+  const { settings, loadingSettings } = useStoreSettings();
+  
+  const FREE_DELIVERY_THRESHOLD = settings.freeDeliveryLimit || 0;
+  const DEFAULT_DELIVERY_CHARGE = settings.deliveryCharge || 0;
 
   const savedCheckoutData = JSON.parse(
     sessionStorage.getItem('checkoutForm') || '{}'
@@ -55,7 +58,39 @@ const [paymentMethod, setPaymentMethod] = React.useState(
 );
 
 const [placingOrder, setPlacingOrder] = React.useState(false);
+const [activeOrder, setActiveOrder] = React.useState(null);
+const [checkingActiveOrder, setCheckingActiveOrder] = React.useState(true);
 
+  // Check for active orders on mount
+  useEffect(() => {
+    const checkActiveOrder = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) {
+          setCheckingActiveOrder(false);
+          return;
+        }
+        const { data, error } = await supabase
+          .from('orders')
+          .select('id, order_status')
+          .eq('user_id', user.id)
+          .in('order_status', ['Placed', 'Out for Delivery'])
+          .limit(1)
+          .single();
+
+        if (!error && data) {
+          setActiveOrder(data);
+        } else {
+          setActiveOrder(null);
+        }
+      } catch {
+        setActiveOrder(null);
+      } finally {
+        setCheckingActiveOrder(false);
+      }
+    };
+    checkActiveOrder();
+  }, []);
 
 
 
@@ -86,14 +121,8 @@ const [placingOrder, setPlacingOrder] = React.useState(false);
     return cart.length; // Distinct item count matching screenshot
   }, [cart]);
 
-  const deliveryCharge = useMemo(() => {
-    if (subtotal === 0 || subtotal >= FREE_DELIVERY_THRESHOLD) return 0;
-    return DEFAULT_DELIVERY_CHARGE;
-  }, [subtotal]);
-
-  const packagingCharge = useMemo(() => {
-    return subtotal > 0 ? PACKAGING_CHARGE : 0;
-  }, [subtotal]);
+  const deliveryCharge = 0;
+  const packagingCharge = 0;
 
   const discountValue = useMemo(() => {
     if (discountPercent > 0 && subtotal > 0) {
@@ -103,18 +132,12 @@ const [placingOrder, setPlacingOrder] = React.useState(false);
   }, [subtotal, discountPercent]);
 
   const totalAmount = useMemo(() => {
-    const total = subtotal + deliveryCharge + packagingCharge - discountValue;
+    const total = subtotal - discountValue;
     return Math.max(0, total);
-  }, [subtotal, deliveryCharge, packagingCharge, discountValue]);
+  }, [subtotal, discountValue]);
 
-  const deliveryLeft = useMemo(() => {
-    return Math.max(0, FREE_DELIVERY_THRESHOLD - subtotal);
-  }, [subtotal]);
-
-  const deliveryProgressPercent = useMemo(() => {
-    if (subtotal === 0) return 0;
-    return Math.min((subtotal / FREE_DELIVERY_THRESHOLD) * 100, 100);
-  }, [subtotal]);
+  const deliveryLeft = 0;
+  const deliveryProgressPercent = 100;
 
   // Operations
   const handleUpdateQty = (id, change) => {
@@ -254,10 +277,22 @@ const [placingOrder, setPlacingOrder] = React.useState(false);
         setPlacingOrder(false);
         return;
       }
-      // Calculate estimated delivery date (3-5 business days)
-      const deliveryDate = new Date();
-      deliveryDate.setDate(deliveryDate.getDate() + 4); // roughly 4 days
-      const estimatedDelivery = deliveryDate.toISOString().split('T')[0];
+
+      // Re-check for active orders right before placing
+      const { data: activeCheck } = await supabase
+        .from('orders')
+        .select('id, order_status')
+        .eq('user_id', user.id)
+        .in('order_status', ['Placed', 'Out for Delivery'])
+        .limit(1)
+        .single();
+
+      if (activeCheck) {
+        setActiveOrder(activeCheck);
+        toast.error('You already have an active order.');
+        setPlacingOrder(false);
+        return;
+      }
 
       const order = await createOrder({
         user_id: user.id,
@@ -266,14 +301,8 @@ const [placingOrder, setPlacingOrder] = React.useState(false);
         location_link: locationLink,
         delivery_notes: deliveryNotes,
         payment_method: paymentMethod,
-        subtotal: subtotal,
-        delivery_charge: deliveryCharge,
-        packaging_charge: packagingCharge,
-        discount: discountValue,
         total_amount: totalAmount,
-        payment_status: paymentMethod === 'COD' ? 'Pending' : 'Paid',
-        order_status: 'Pending',
-        estimated_delivery_date: estimatedDelivery,
+        order_status: 'Placed',
       });
 
       console.log(cart);
@@ -281,17 +310,11 @@ const [placingOrder, setPlacingOrder] = React.useState(false);
         order_id: order.id,
         product_id: item.id,
         product_name: item.title || item.name || 'Unknown Product',
-        product_image: item.image || item.image_url || '',
-        product_brand: item.brand || '',
-        product_weight: item.weight || '',
         quantity: item.quantity,
-        price_at_purchase: item.price, // using price_at_purchase as per prompt priority 2
-        price: item.price, // keeping price as well for backward compatibility
-        subtotal: item.price * item.quantity,
+        price: item.price,
       }))
       await createOrderItems(orderItems);
 
-      toast.success('order Placed');
       clearCart();
       setIsCheckoutModalOpen(false);
       setCustomerName('');
@@ -301,7 +324,7 @@ const [placingOrder, setPlacingOrder] = React.useState(false);
       setPaymentMethod('COD');
       sessionStorage.removeItem('checkoutForm');
       
-      navigate('/my-orders');
+      navigate(`/order-success/${order.id}`);
     } catch (error) {
       console.error('Failed to create order items:', error);
       toast.error('Failed to save order');
@@ -417,36 +440,24 @@ const [placingOrder, setPlacingOrder] = React.useState(false);
                 {/* Free Delivery Progress */}
                 <div className="delivery-progress-container">
                   <div className="delivery-progress-text">
-                    {subtotal >= FREE_DELIVERY_THRESHOLD ? (
                       <span style={{ color: '#16a34a' }}>
-                        <i className="fa-solid fa-circle-check"></i> Congratulations! You unlocked <strong>FREE delivery!</strong>
+                        <i className="fa-solid fa-circle-check"></i> Enjoy <strong>FREE delivery</strong> on all orders!
                       </span>
-                    ) : (
-                      <span>
-                        Add <strong>{formatRupee(deliveryLeft)}</strong> more to get <strong>FREE delivery!</strong>
-                      </span>
-                    )}
                   </div>
                   <div className="progress-bar-bg">
                     <div 
                       className="progress-bar-fill" 
                       style={{ 
-                        width: `${deliveryProgressPercent}%`,
-                        backgroundColor: subtotal >= FREE_DELIVERY_THRESHOLD ? '#16a34a' : 'var(--primary)'
+                        width: `100%`,
+                        backgroundColor: '#16a34a'
                       }}
                     ></div>
                   </div>
                   <div className="progress-subtext">
                     <span>{formatRupee(subtotal)} Spend</span>
-                    {subtotal < FREE_DELIVERY_THRESHOLD ? (
-                      <span>
-                        <i className="fa-solid fa-truck"></i> {formatRupee(deliveryLeft)} Left
-                      </span>
-                    ) : (
                       <span style={{ color: '#16a34a', fontWeight: '700' }}>
                         <i className="fa-solid fa-circle-check"></i> Free Delivery
                       </span>
-                    )}
                   </div>
                 </div>
 
@@ -543,6 +554,24 @@ const [placingOrder, setPlacingOrder] = React.useState(false);
 
     <h3>Confirm Order</h3>
 
+    {activeOrder ? (
+      <>
+        <div className='modal-body'>
+          <div className="active-order-block">
+            <div className="active-order-icon">📦</div>
+            <p className="active-order-message">
+              You already have an active order in progress. Please wait until your current order is delivered before placing another order.
+            </p>
+            <span className="active-order-status">Current Status: <strong>{activeOrder.order_status}</strong></span>
+          </div>
+        </div>
+        <div className='modal-footer'>
+          <button className='btn-outline' onClick={() => { setIsCheckoutModalOpen(false); navigate('/Home'); }}>Continue Shopping</button>
+          <button className='btn-primary' onClick={() => { setIsCheckoutModalOpen(false); navigate(`/order/${activeOrder.id}`); }} style={{ margin: 0, width: 'auto', padding: '10px 24px' }}>View Current Order</button>
+        </div>
+      </>
+    ) : (
+      <>
     <div className='modal-body'>
     <input type='text' placeholder='Enter Full Name' value={customerName} onChange = {(e) => setCustomerName(e.target.value)}
         className='modal-input' disabled={placingOrder} />
@@ -580,6 +609,8 @@ const [placingOrder, setPlacingOrder] = React.useState(false);
       {placingOrder ? 'Processing...' : 'Place Order'}
     </button>
    </div>
+      </>
+    )}
    </div>
   </div>
  )

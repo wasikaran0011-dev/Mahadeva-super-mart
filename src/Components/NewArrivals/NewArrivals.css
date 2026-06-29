@@ -1,0 +1,32 @@
+/* NEW ARRIVALS SECTION */
+.new-arrivals-section {
+  width: 100%;
+}
+
+.new-arrivals-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: 20px;
+}
+
+@media (max-width: 1024px) {
+  .new-arrivals-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .new-arrivals-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .new-arrivals-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}

@@ -1,4 +1,4 @@
-.search-page{
+.products-page{
   max-width: 1280px;
   margin: 0 auto;
   padding: 30px 24px 60px;
@@ -263,7 +263,7 @@
 
 @media (max-width:768px){
 
-  .search-page{
+  .products-page{
     padding:20px 16px 36px;
   }
 
@@ -349,7 +349,7 @@
 
 @media (max-width:480px){
 
-  .search-page{
+  .products-page{
     padding:16px 12px 28px;
   }
 

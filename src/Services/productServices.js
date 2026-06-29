@@ -55,3 +55,35 @@ export const getProductById = async (id) => {
 
         return data;
 }
+
+export const getNewArrivals = async () => {
+    const { data, error } = await supabase
+        .from('Products')
+        .select('*')
+        .eq('is_new_arrival', true)
+        .eq('is_active', true)
+        .order('created_at', { ascending: false })
+        .limit(8);
+
+    if (error) {
+        throw error;
+    }
+
+    return data;
+};
+
+export const getOfferProducts = async () => {
+    const { data, error } = await supabase
+        .from('Products')
+        .select('*')
+        .eq('is_offer_product', true)
+        .eq('is_active', true)
+        .order('created_at', { ascending: false })
+        .limit(8);
+
+    if (error) {
+        throw error;
+    }
+
+    return data;
+};

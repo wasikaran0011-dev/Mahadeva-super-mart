@@ -4,6 +4,8 @@ import Header from '../../Components/Header/Header.jsx'
 import Hero from '../../Components/Hero/Hero.jsx'
 import Navbar from '../../Components/Navbar/Navbar.jsx'
 import Features from '../../Components/Features/Features.jsx'
+import NewArrivals from '../../Components/NewArrivals/NewArrivals.jsx'
+import Offers from '../../Components/Offers/Offers.jsx'
 import FeaturedCategories from '../../Components/FeaturedCategories/FeaturedCategories.jsx'
 import Footer from '../../Components/Footer/Footer.jsx'
 
@@ -18,6 +20,8 @@ const Home = () => {
             <main className='homeContent'>
                 <Hero />
                 <Features />
+                <NewArrivals />
+                <Offers />
                 <FeaturedCategories />
             </main>
             <Footer />
@@ -25,4 +29,4 @@ const Home = () => {
     )
 };
 
-export default Home;
+export default Home;

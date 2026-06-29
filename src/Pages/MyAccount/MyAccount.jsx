@@ -6,9 +6,12 @@ import Header from '../../Components/Header/Header.jsx';
 import Navbar from '../../Components/Navbar/Navbar.jsx';
 import Footer from '../../Components/Footer/Footer.jsx';
 import toast from 'react-hot-toast';
+import { useStoreSettings } from '../../Context/StoreSettingsContext.jsx';
 import './MyAccount.css';
 
 const MyAccount = () => {
+  const { settings } = useStoreSettings();
+
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [fullName, setFullName] = useState('');
@@ -36,13 +39,30 @@ const MyAccount = () => {
   useEffect(() => {
     let isMounted = true;
     
+    const fetchProfileName = async (userId) => {
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('full_name')
+          .eq('id', userId)
+          .single();
+        if (!error && data) {
+          return data.full_name;
+        }
+      } catch (err) {
+        console.error('Error fetching name from profiles:', err);
+      }
+      return null;
+    };
+
     const fetchUserData = async () => {
       try {
         const { data: { user }, error } = await supabase.auth.getUser();
         if (error) throw error;
         if (user && isMounted) {
           setUser(user);
-          const name = user.user_metadata?.full_name || '';
+          const dbName = await fetchProfileName(user.id);
+          const name = dbName || user.user_metadata?.full_name || '';
           setFullName(name);
           setNewName(name);
           
@@ -62,18 +82,32 @@ const MyAccount = () => {
 
     fetchUserData();
 
+    // Listen to profile updates from other components
+    const handleProfileUpdate = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user && isMounted) {
+        const dbName = await fetchProfileName(user.id);
+        if (dbName !== null) {
+          setFullName(dbName);
+          setNewName(dbName);
+        }
+      }
+    };
+    window.addEventListener('profile-updated', handleProfileUpdate);
+
     // Listen to auth state changes to keep user data in sync
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (session?.user && isMounted) {
         setUser(session.user);
-        const name = session.user.user_metadata?.full_name || '';
-        setFullName(name);
+        const name = await fetchProfileName(session.user.id);
+        setFullName(name || session.user.user_metadata?.full_name || '');
       }
     });
 
     return () => {
       isMounted = false;
       subscription.unsubscribe();
+      window.removeEventListener('profile-updated', handleProfileUpdate);
     };
   }, []);
 
@@ -116,19 +150,34 @@ const MyAccount = () => {
 
     setIsSaving(true);
     try {
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      if (userError || !user) throw userError || new Error('No user found');
+
+      // Update name in profiles table for only the authenticated user's row
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({ full_name: trimmedName })
+        .eq('id', user.id);
+
+      if (profileError) throw profileError;
+
+      // Update auth metadata as well for consistency
       const { data, error } = await supabase.auth.updateUser({
         data: { full_name: trimmedName }
       });
 
       if (error) throw error;
 
+      setFullName(trimmedName);
       if (data?.user) {
-        const updatedName = data.user.user_metadata?.full_name || trimmedName;
-        setFullName(updatedName);
         setUser(data.user);
-        setIsEditingName(false);
-        toast.success('Name updated successfully!');
       }
+      setIsEditingName(false);
+
+      // Notify other components to sync and refresh their name display
+      window.dispatchEvent(new Event('profile-updated'));
+
+      toast.success('Name updated successfully!');
     } catch (error) {
       console.error('Error updating name:', error);
       toast.error(error.message || 'Failed to update name');
@@ -393,19 +442,19 @@ const MyAccount = () => {
             <div className="help-support-section card-shadow">
               <h3>Help & Support</h3>
               <div className="support-actions-grid">
-                <a href="tel:+918686969980" className="support-link-card" aria-label="Call Store">
+                <a href={`tel:${settings.phone || '+918686969980'}`} className="support-link-card" aria-label="Call Store">
                   <i className="fa-solid fa-phone"></i>
                   <div className="support-card-info">
                     <span>Call Store</span>
-                    <p>+91 8686969980</p>
+                    <p>{settings.phone || '+91 8686969980'}</p>
                   </div>
                 </a>
 
-                <a href="mailto:mahadevasupermartstore2@gmail.com" className="support-link-card" aria-label="Email Support">
+                <a href={`mailto:${settings.email || 'mahadevasupermartstore2@gmail.com'}`} className="support-link-card" aria-label="Email Support">
                   <i className="fa-solid fa-envelope"></i>
                   <div className="support-card-info">
                     <span>Email Support</span>
-                    <p>mahadevasupermartstore2@gmail.com</p>
+                    <p>{settings.email || 'mahadevasupermartstore2@gmail.com'}</p>
                   </div>
                 </a>
               </div>
@@ -431,7 +480,7 @@ const MyAccount = () => {
                 <div id="accordion-content-0" className="accordion-content">
                   <div className="accordion-content-wrapper">
                     <div className="accordion-text-inner">
-                      <p>At Mahadeva Super Mart, we value and protect your privacy. This Privacy Policy explains how we collect, use, and safeguard your personal information when you use our website and mobile application.</p>
+                      <p>At {settings.storeName || 'Mahadeva Super Mart'}, we value and protect your privacy. This Privacy Policy explains how we collect, use, and safeguard your personal information when you use our website and mobile application.</p>
                       <h4>Information We Collect</h4>
                       <p>We collect information you provide directly to us, including your name, email address, phone number, and Google Maps delivery locations. We also collect transaction details and purchase histories.</p>
                       <h4>How We Use Your Information</h4>
@@ -457,7 +506,7 @@ const MyAccount = () => {
                 <div id="accordion-content-1" className="accordion-content">
                   <div className="accordion-content-wrapper">
                     <div className="accordion-text-inner">
-                      <p>Welcome to Mahadeva Super Mart. By accessing or using our services, you agree to comply with and be bound by the following terms and conditions.</p>
+                      <p>Welcome to {settings.storeName || 'Mahadeva Super Mart'}. By accessing or using our services, you agree to comply with and be bound by the following terms and conditions.</p>
                       <h4>1. Account Registration</h4>
                       <p>You must maintain the confidentiality of your account credentials. You are responsible for all activities that occur under your account.</p>
                       <h4>2. Ordering & Delivery</h4>
@@ -485,8 +534,8 @@ const MyAccount = () => {
                 <div id="accordion-content-2" className="accordion-content">
                   <div className="accordion-content-wrapper">
                     <div className="accordion-text-inner">
-                      <p><strong>Mahadeva Super Mart</strong> is your premium neighborhood supermarket, committed to bringing fresh groceries, household essentials, and daily necessities straight to your doorstep.</p>
-                      <p>Founded with the vision of making grocery shopping hassle-free, we combine a handpicked selection of high-quality products with efficient, reliable delivery services. Our store is located in Sapthagiri Colony, Karimnagar, serving our local community with dedication and care.</p>
+                      <p><strong>{settings.storeName || 'Mahadeva Super Mart'}</strong> is your premium neighborhood supermarket, committed to bringing fresh groceries, household essentials, and daily necessities straight to your doorstep.</p>
+                      <p>Founded with the vision of making grocery shopping hassle-free, we combine a handpicked selection of high-quality products with efficient, reliable delivery services. Our store is located in {settings.address ? settings.address.split(',')[0] : 'Sapthagiri Colony, Karimnagar'}, serving our local community with dedication and care.</p>
                       <p>Thank you for choosing us as your trusted shopping partner!</p>
                     </div>
                   </div>

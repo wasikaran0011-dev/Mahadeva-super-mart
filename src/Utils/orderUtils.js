@@ -24,6 +24,7 @@ export const getStatusClass = (status) => {
     const s = String(status).toLowerCase();
     switch (s) {
         case 'delivered': return 'delivered';
+        case 'placed':
         case 'pending': return 'pending';
         case 'cancelled':
         case 'canceled': return 'cancelled';
@@ -40,6 +41,7 @@ export const getStatusLabel = (status) => {
     const s = String(status).toLowerCase();
     switch (s) {
         case 'delivered': return 'Delivered';
+        case 'placed': return 'Placed';
         case 'pending': return 'Pending';
         case 'cancelled':
         case 'canceled': return 'Cancelled';

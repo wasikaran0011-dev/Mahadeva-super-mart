@@ -886,3 +886,36 @@ textarea.modal-input {
     display: none;
   }
 }
+
+/* Active Order Block */
+.active-order-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 24px 16px;
+  gap: 14px;
+}
+
+.active-order-icon {
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.active-order-message {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 360px;
+  margin: 0;
+}
+
+.active-order-status {
+  display: inline-block;
+  font-size: 0.82rem;
+  color: #92400e;
+  background: #fef3c7;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-weight: 500;
+}

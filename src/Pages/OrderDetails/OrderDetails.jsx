@@ -7,12 +7,8 @@ import Footer from '../../Components/Footer/Footer.jsx';
 import { supabase } from '../../Services/supabase.js';
 import { getOrderDetails } from '../../Services/orderServices.js';
 import { formatDate, formatRupee, getStatusClass, getStatusLabel, getPaymentStatusLabel, getPaymentMethodLabel } from '../../Utils/orderUtils.js';
-
-// Real store contact details
-const SUPPORT_CONFIG = {
-    email: 'mahadevasupermartstore2@gmail.com',
-    phone: '+918686969980',
-};
+import { useStoreSettings } from '../../Context/StoreSettingsContext.jsx';
+import OrderTracking from '../../Components/OrderTracking/OrderTracking.jsx';
 
 const OrderDetails = () => {
 
@@ -21,6 +17,7 @@ const OrderDetails = () => {
     const [ order, setOrder ] = useState(null);
     const [ loading, setLoading ] = useState(true);
     const [ notFound, setNotFound ] = useState(false);
+    const { settings } = useStoreSettings();
 
     useEffect(() => {
         const loadOrder = async () => {
@@ -57,16 +54,16 @@ const OrderDetails = () => {
     // Fallbacks for older orders that might not have these fields populated
     const oldSubtotal = useMemo(() => items.reduce((acc, item) => acc + ((item.price_at_purchase || item.price || 0) * (item.quantity || 1)), 0), [items]);
 
-    const statusValue = order?.order_status || order?.status || 'pending';
+    const statusValue = order?.order_status || 'Placed';
     const statusClass = getStatusClass(statusValue);
     
     // Priority 1 — Database Correctness: Read directly from order record
-    const subtotal = order?.subtotal ?? oldSubtotal;
-    const deliveryCharge = order?.delivery_charge ?? 0;
-    const packagingCharge = order?.packaging_charge ?? (oldSubtotal > 0 ? 15 : 0);
-    const discount = order?.discount ?? 0;
-    const totalAmount = order?.total_amount ?? (subtotal + deliveryCharge + packagingCharge - discount);
-    const estimatedDelivery = order?.estimated_delivery_date ? formatDate(order.estimated_delivery_date) : 'Not Available';
+    const subtotal = oldSubtotal;
+    const deliveryCharge = 0;
+    const packagingCharge = 0;
+    const totalAmount = order?.total_amount ?? subtotal;
+    const discount = Math.max(0, subtotal - totalAmount);
+    const estimatedDelivery = "Within 30 Minutes";
     
     const paymentMethod = order?.payment_method || 'Unknown';
     // Priority 5 — Payment Status: Read from database
@@ -247,10 +244,10 @@ const OrderDetails = () => {
                                 Need help regarding this order? We're here to assist you.
                             </p>
                             <div className="od-help-actions">
-                                <a href={`mailto:${SUPPORT_CONFIG.email}`} className="od-btn-help" aria-label="Contact Support via Email">
+                                <a href={`mailto:${settings.email || 'mahadevasupermartstore2@gmail.com'}`} className="od-btn-help" aria-label="Contact Support via Email">
                                     ✉ Contact Support
                                 </a>
-                                <a href={`tel:${SUPPORT_CONFIG.phone}`} className="od-btn-help od-btn-help-outline" aria-label="Call Store Support">
+                                <a href={`tel:${settings.phone || '+918686969980'}`} className="od-btn-help od-btn-help-outline" aria-label="Call Store Support">
                                     📞 Call Store
                                 </a>
                             </div>
@@ -388,6 +385,15 @@ const OrderDetails = () => {
                                 <span>{formatRupee(totalAmount)}</span>
                             </div>
                             <p className="od-bill-tax-note">(Inclusive of all taxes)</p>
+                        </section>
+
+                        {/* ── TRACKING CARD ────────────────────── */}
+                        <section className="od-card">
+                            <h2 className="od-card-title">
+                                <span className="od-card-title-icon" aria-hidden="true">🚚</span>
+                                Order Tracking
+                            </h2>
+                            <OrderTracking status={statusValue} />
                         </section>
 
                         {/* ── PAYMENT INFO CARD ────────────────── */}

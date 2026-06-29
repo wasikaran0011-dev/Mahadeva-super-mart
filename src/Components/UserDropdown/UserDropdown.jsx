@@ -1,7 +1,7 @@
 import './UserDropdown.css';
 import { useNavigate } from 'react-router-dom';
 
-const UserDropdown = ({onClose}) => {
+const UserDropdown = ({onClose, userName}) => {
   const navigate = useNavigate();
 
   const handleMyAccount = (event) => {
@@ -18,6 +18,11 @@ const UserDropdown = ({onClose}) => {
   
   return (
     <div className="user-dropdown" aria-label="User menu">
+      {userName && (
+        <div className="user-dropdown-greeting">
+          Hi, {userName}!
+        </div>
+      )}
       <button 
         type="button" 
         className="dropdown-item" 

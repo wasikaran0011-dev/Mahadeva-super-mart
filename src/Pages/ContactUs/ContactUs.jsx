@@ -3,9 +3,12 @@ import Header from '../../Components/Header/Header.jsx';
 import Navbar from '../../Components/Navbar/Navbar.jsx';
 import Footer from '../../Components/Footer/Footer.jsx';
 import { Link } from 'react-router-dom';
+import { useStoreSettings } from '../../Context/StoreSettingsContext.jsx';
 import './ContactUs.css';
 
 const ContactUs = () => {
+  const { settings } = useStoreSettings();
+
   useEffect(() => {
     const prev = document.title;
     document.title = 'Contact Us | Mahadeva Super Mart';
@@ -21,8 +24,9 @@ const ContactUs = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const targetEmail = settings.email || 'mahadevasupermartstore2@gmail.com';
     // Compose a mailto: link with form data pre-filled
-    const mailtoLink = `mailto:mahadevasupermartstore2@gmail.com?subject=${encodeURIComponent(formData.subject || 'Customer Enquiry')}&body=${encodeURIComponent(
+    const mailtoLink = `mailto:${targetEmail}?subject=${encodeURIComponent(formData.subject || 'Customer Enquiry')}&body=${encodeURIComponent(
       `Name: ${formData.name}\nEmail: ${formData.email}\n\n${formData.message}`
     )}`;
     window.location.href = mailtoLink;
@@ -33,23 +37,23 @@ const ContactUs = () => {
     {
       icon: '📞',
       label: 'Call Us',
-      value: '+91 8686969980',
+      value: settings.phone || '+91 8686969980',
       desc: 'Available Mon–Sat, 8 AM – 9 PM',
-      href: 'tel:+918686969980',
+      href: `tel:${settings.phone || '+918686969980'}`,
       btnText: 'Call Now',
     },
     {
       icon: '✉️',
       label: 'Email Us',
-      value: 'mahadevasupermartstore2@gmail.com',
+      value: settings.email || 'mahadevasupermartstore2@gmail.com',
       desc: 'We respond within 24 hours',
-      href: 'mailto:mahadevasupermartstore2@gmail.com',
+      href: `mailto:${settings.email || 'mahadevasupermartstore2@gmail.com'}`,
       btnText: 'Send Email',
     },
     {
       icon: '📍',
       label: 'Visit Us',
-      value: 'Sapthagiri Colony, Karimnagar',
+      value: settings.address || 'Sapthagiri Colony, Karimnagar',
       desc: 'Telangana, India',
       href: 'https://maps.google.com/?q=Sapthagiri+Colony+Karimnagar+Telangana',
       btnText: 'Open Maps',
@@ -117,7 +121,7 @@ const ContactUs = () => {
 
             {/* Left: Store Info */}
             <div className="contact-info-col">
-              <h2>Mahadeva Super Mart</h2>
+              <h2>{settings.storeName || 'Mahadeva Super Mart'}</h2>
               <p className="contact-store-tagline">
                 Your trusted neighborhood supermarket in Sapthagiri Colony, Karimnagar.
               </p>
@@ -127,8 +131,7 @@ const ContactUs = () => {
                 <div className="cdb-icon">📍</div>
                 <div>
                   <strong>Store Address</strong>
-                  <p>Sapthagiri Colony</p>
-                  <p>Karimnagar, Telangana, India</p>
+                  <p>{settings.address || 'Sapthagiri Colony, Karimnagar, Telangana, India'}</p>
                   <a
                     href="https://maps.google.com/?q=Sapthagiri+Colony+Karimnagar+Telangana"
                     target="_blank"
@@ -147,7 +150,7 @@ const ContactUs = () => {
                 <div>
                   <strong>Phone</strong>
                   <p>
-                    <a href="tel:+918686969980" className="contact-link">+91 8686969980</a>
+                    <a href={`tel:${settings.phone || '+918686969980'}`} className="contact-link">{settings.phone || '+91 8686969980'}</a>
                   </p>
                 </div>
               </div>
@@ -158,8 +161,8 @@ const ContactUs = () => {
                 <div>
                   <strong>Email</strong>
                   <p>
-                    <a href="mailto:mahadevasupermartstore2@gmail.com" className="contact-link">
-                      mahadevasupermartstore2@gmail.com
+                    <a href={`mailto:${settings.email || 'mahadevasupermartstore2@gmail.com'}`} className="contact-link">
+                      {settings.email || 'mahadevasupermartstore2@gmail.com'}
                     </a>
                   </p>
                 </div>
@@ -288,19 +291,19 @@ const ContactUs = () => {
                 <div className="support-topic-icon">🔄</div>
                 <h3>Returns & Refunds</h3>
                 <p>Not satisfied with a product? Call us and we'll arrange a pickup or refund.</p>
-                <a href="tel:+918686969980" className="support-link">Call +91 8686969980 →</a>
+                <a href={`tel:${settings.phone || '+918686969980'}`} className="support-link">Call {settings.phone || '+91 8686969980'} →</a>
               </div>
               <div className="support-topic">
                 <div className="support-topic-icon">🚚</div>
                 <h3>Delivery Issues</h3>
                 <p>Facing a delay or wrong delivery? Contact us immediately and we'll resolve it.</p>
-                <a href="mailto:mahadevasupermartstore2@gmail.com" className="support-link">Email Us →</a>
+                <a href={`mailto:${settings.email || 'mahadevasupermartstore2@gmail.com'}`} className="support-link">Email Us →</a>
               </div>
               <div className="support-topic">
                 <div className="support-topic-icon">💳</div>
                 <h3>Payment Support</h3>
                 <p>Questions about your bill or payment? We'll help clarify any discrepancies.</p>
-                <a href="tel:+918686969980" className="support-link">Call Support →</a>
+                <a href={`tel:${settings.phone || '+918686969980'}`} className="support-link">Call Support →</a>
               </div>
             </div>
           </div>

@@ -4,8 +4,11 @@ import Footer from '../../Components/Footer/Footer.jsx';
 import { Link } from 'react-router-dom';
 import './AboutUs.css';
 import { useEffect } from 'react';
+import { useStoreSettings } from '../../Context/StoreSettingsContext.jsx';
 
 const AboutUs = () => {
+  const { settings } = useStoreSettings();
+
   useEffect(() => {
     const prev = document.title;
     document.title = 'About Us | Mahadeva Super Mart';
@@ -42,12 +45,12 @@ const AboutUs = () => {
             <span className="about-hero-tag">Est. 2020 · Karimnagar</span>
             <h1>Your Trusted Neighborhood<br />Supermarket</h1>
             <p>
-              Mahadeva Super Mart brings you the freshest groceries and daily essentials,
+              {settings.storeName || 'Mahadeva Super Mart'} brings you the freshest groceries and daily essentials,
               delivered with care to your doorstep.
             </p>
             <div className="about-hero-ctas">
               <Link to="/Home" className="about-btn-primary">Shop Now</Link>
-              <a href="tel:+918686969980" className="about-btn-outline">Call Us</a>
+              <a href={`tel:${settings.phone || '+918686969980'}`} className="about-btn-outline">Call Us</a>
             </div>
           </div>
           <div className="about-hero-visual" aria-hidden="true">
@@ -74,7 +77,7 @@ const AboutUs = () => {
                 <div className="story-step-content">
                   <h3>Humble Beginnings</h3>
                   <p>
-                    Mahadeva Super Mart started as a small neighborhood store in Sapthagiri Colony with a simple
+                    {settings.storeName || 'Mahadeva Super Mart'} started as a small neighborhood store in {settings.address ? settings.address.split(',')[0] : 'Sapthagiri Colony'} with a simple
                     mission — to provide fresh, affordable groceries to our local community.
                   </p>
                 </div>
@@ -94,7 +97,7 @@ const AboutUs = () => {
                 <div className="story-step-content">
                   <h3>Going Digital</h3>
                   <p>
-                    We launched our online platform to bring the Mahadeva Super Mart experience to your phone —
+                    We launched our online platform to bring the {settings.storeName || 'Mahadeva Super Mart'} experience to your phone —
                     browse, order, and get delivery at your doorstep without leaving home.
                   </p>
                 </div>
@@ -130,7 +133,7 @@ const AboutUs = () => {
           <div className="about-section-inner">
             <div className="about-section-header">
               <span className="section-label">Why Us</span>
-              <h2>Why Choose Mahadeva Super Mart?</h2>
+              <h2>Why Choose {settings.storeName || 'Mahadeva Super Mart'}?</h2>
               <p>We go beyond just selling groceries — we deliver an experience you can trust.</p>
             </div>
             <div className="why-grid">
@@ -182,7 +185,7 @@ const AboutUs = () => {
                 <li>📍 Google Maps-based precision delivery</li>
                 <li>⚡ Same-day and next-day delivery options</li>
                 <li>💳 Cash on Delivery and Online Payment accepted</li>
-                <li>🆓 Free delivery on orders above ₹1,000</li>
+                <li>🆓 Free delivery on orders above ₹{settings.freeDeliveryLimit || 1000}</li>
                 <li>📦 Securely packed to preserve freshness</li>
               </ul>
               <Link to="/Cart" className="about-btn-primary">Start Shopping</Link>
@@ -204,21 +207,21 @@ const AboutUs = () => {
                   <span className="loc-icon">📍</span>
                   <div>
                     <strong>Address</strong>
-                    <p>Sapthagiri Colony, Karimnagar, Telangana</p>
+                    <p>{settings.address || 'Sapthagiri Colony, Karimnagar, Telangana'}</p>
                   </div>
                 </div>
                 <div className="location-detail-item">
                   <span className="loc-icon">📞</span>
                   <div>
                     <strong>Phone</strong>
-                    <p><a href="tel:+918686969980">+91 8686969980</a></p>
+                    <p><a href={`tel:${settings.phone || '+918686969980'}`}>{settings.phone || '+91 8686969980'}</a></p>
                   </div>
                 </div>
                 <div className="location-detail-item">
                   <span className="loc-icon">✉️</span>
                   <div>
                     <strong>Email</strong>
-                    <p><a href="mailto:mahadevasupermartstore2@gmail.com">mahadevasupermartstore2@gmail.com</a></p>
+                    <p><a href={`mailto:${settings.email || 'mahadevasupermartstore2@gmail.com'}`}>{settings.email || 'mahadevasupermartstore2@gmail.com'}</a></p>
                   </div>
                 </div>
                 <div className="location-detail-item">
@@ -245,7 +248,7 @@ const AboutUs = () => {
                 <div className="map-ripple"></div>
                 <div className="map-pin">📍</div>
               </div>
-              <p>Sapthagiri Colony<br />Karimnagar, Telangana</p>
+              <p>{settings.address || 'Sapthagiri Colony, Karimnagar, Telangana'}</p>
             </div>
           </div>
         </section>

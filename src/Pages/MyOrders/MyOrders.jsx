@@ -144,7 +144,7 @@ const MyOrders = () => {
                             </div>
                         ) : (
                             filterProducts.map((order) => {
-                                const statusValue = order.status || order.order_status || 'pending';
+                                const statusValue = order.order_status || 'Placed';
                                 const statusClass = getStatusClass(statusValue);
                                 const statusLabel = getStatusLabel(statusValue);
                                 

@@ -1,0 +1,111 @@
+.conf-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.conf-modal-content {
+  background-color: #ffffff;
+  border-radius: var(--radius-md, 12px);
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  animation: slideUpFadeIn 0.3s ease-out forwards;
+  overflow: hidden;
+}
+
+@keyframes slideUpFadeIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.conf-modal-header {
+  padding: 20px 24px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.conf-modal-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.warning-icon {
+  font-size: 1.5rem;
+  color: #ef4444;
+}
+
+.conf-modal-body {
+  padding: 0 24px 24px;
+}
+
+.conf-modal-body p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #4b5563;
+  line-height: 1.5;
+}
+
+.conf-modal-footer {
+  padding: 16px 24px;
+  background-color: #f9fafb;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.conf-btn-cancel {
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  color: #374151;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm, 6px);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.conf-btn-cancel:hover {
+  background-color: #f3f4f6;
+}
+
+.conf-btn-confirm {
+  border: none;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm, 6px);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: #ffffff;
+  transition: all 0.2s;
+}
+
+.conf-btn-confirm.primary {
+  background-color: #3b82f6;
+}
+
+.conf-btn-confirm.primary:hover {
+  background-color: #2563eb;
+}
+
+.conf-btn-confirm.destructive {
+  background-color: #ef4444;
+}
+
+.conf-btn-confirm.destructive:hover {
+  background-color: #dc2626;
+}

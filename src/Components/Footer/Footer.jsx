@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom';
+import { useStoreSettings } from '../../Context/StoreSettingsContext.jsx';
 import './Footer.css';
 
 const Footer = () => {
+  const { settings } = useStoreSettings();
+
   return (
     <footer className="main-footer">
       <div className="footer-container">
@@ -15,12 +18,12 @@ const Footer = () => {
                 <path d="M3 9C3 7.89543 3.89543 7 5 7H19C20.1046 7 21 7.89543 21 9V17C21 19.2091 19.2091 21 17 21H7C4.79086 21 3 19.2091 3 17V9Z" fill="currentColor"/>
               </svg>
             </div>
-            <span className="footer-brand-title">MAHADEVA SUPER MART</span>
+            <span className="footer-brand-title">{settings.storeName.toUpperCase()}</span>
           </div>
           <p className="footer-desc">
             Your premium neighborhood supermarket, now delivering fresh groceries and daily essentials straight to your home.
           </p>
-          <p className="footer-copyright">&copy; 2026 Mahadeva Super Mart. All rights reserved.</p>
+          <p className="footer-copyright">&copy; {new Date().getFullYear()} {settings.storeName}. All rights reserved.</p>
         </div>
         
         {/* Quick Links Column */}
@@ -48,9 +51,9 @@ const Footer = () => {
         {/* Contact Column */}
         <div className="footer-contact-col">
           <h4 className="footer-header">Get In Touch</h4>
-          <p className="footer-info"><strong>Address:</strong> Sapthagiri Colony, Karimnagar.</p>
-          <p className="footer-info"><strong>Phone:</strong> <a href="tel:+918686969980" className="footer-contact-link">+91 8686969980</a></p>
-          <p className="footer-info"><strong>Email:</strong> <a href="mailto:mahadevasupermartstore2@gmail.com" className="footer-contact-link">mahadevasupermartstore2@gmail.com</a></p>
+          <p className="footer-info"><strong>Address:</strong> {settings.address || 'Sapthagiri Colony, Karimnagar.'}</p>
+          <p className="footer-info"><strong>Phone:</strong> <a href={`tel:${settings.phone || '+918686969980'}`} className="footer-contact-link">{settings.phone || '+91 8686969980'}</a></p>
+          <p className="footer-info"><strong>Email:</strong> <a href={`mailto:${settings.email || 'mahadevasupermartstore2@gmail.com'}`} className="footer-contact-link">{settings.email || 'mahadevasupermartstore2@gmail.com'}</a></p>
         </div>
       </div>
     </footer>
