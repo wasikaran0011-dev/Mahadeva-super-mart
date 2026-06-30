@@ -38,3 +38,53 @@ html, body {
 
   --transition-smooth:all .3s ease;
 }
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  position: relative;
+  padding-bottom: 4px;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 50px;
+  background: linear-gradient(90deg, var(--primary-red), var(--accent-orange));
+  border-radius: var(--radius-full);
+}
+
+.section-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary-red);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.section-link:hover {
+  color: var(--accent-orange);
+}
+
+.link-arrow-icon {
+  width: 16px;
+  height: 16px;
+  transition: var(--transition-smooth);
+}
+
+.section-link:hover .link-arrow-icon {
+  transform: translateX(4px);
+}

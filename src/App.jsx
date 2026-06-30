@@ -16,6 +16,8 @@ import MyAccount from './Pages/MyAccount/MyAccount.jsx';
 import AboutUs from './Pages/AboutUs/AboutUs.jsx';
 import ContactUs from './Pages/ContactUs/ContactUs.jsx';
 import OrderSuccess from './Pages/OrderSuccess/OrderSuccess.jsx';
+import NewArrivalsPage from './Pages/NewArrivalsPage/NewArrivalsPage.jsx';
+import OffersPage from './Pages/OffersPage/OffersPage.jsx';
 
 // Admin Components
 import AdminRoute from './Components/AdminRoute.jsx';
@@ -157,6 +159,22 @@ function App() {
           element={
             <ProtectedRoute session={session} loading={loading}>
               <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/new-arrivals"
+          element={
+            <ProtectedRoute session={session} loading={loading}>
+              <NewArrivalsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/offers"
+          element={
+            <ProtectedRoute session={session} loading={loading}>
+              <OffersPage />
             </ProtectedRoute>
           }
         />

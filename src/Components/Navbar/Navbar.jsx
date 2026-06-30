@@ -28,9 +28,11 @@ const Navbar = () => {
     },
     {
       name: 'Offers',
+      to: '/offers',
     },
     {
       name: 'New Arrivals',
+      to: '/new-arrivals',
     },
     {
       name: 'About Us',

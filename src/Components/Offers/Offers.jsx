@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { getOfferProducts } from '../../Services/productServices';
 import { useCart } from '../../Context/Cartcontext';
 import './Offers.css';
@@ -30,6 +30,13 @@ const Offers = () => {
     <section className="offers-section" aria-labelledby="offers-heading">
       <div className="section-header">
         <h3 className="section-title" id="offers-heading">Offers</h3>
+        <Link to="/offers" className="section-link">
+          <span>View All</span>
+          <svg className="link-arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </Link>
       </div>
 
       <div className="offers-grid">

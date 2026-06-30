@@ -56,14 +56,19 @@ export const getProductById = async (id) => {
         return data;
 }
 
-export const getNewArrivals = async () => {
-    const { data, error } = await supabase
+export const getNewArrivals = async (limitCount = 8) => {
+    let query = supabase
         .from('Products')
         .select('*')
         .eq('is_new_arrival', true)
         .eq('is_active', true)
-        .order('created_at', { ascending: false })
-        .limit(8);
+        .order('created_at', { ascending: false });
+
+    if (limitCount) {
+        query = query.limit(limitCount);
+    }
+
+    const { data, error } = await query;
 
     if (error) {
         throw error;
@@ -72,14 +77,19 @@ export const getNewArrivals = async () => {
     return data;
 };
 
-export const getOfferProducts = async () => {
-    const { data, error } = await supabase
+export const getOfferProducts = async (limitCount = 8) => {
+    let query = supabase
         .from('Products')
         .select('*')
         .eq('is_offer_product', true)
         .eq('is_active', true)
-        .order('created_at', { ascending: false })
-        .limit(8);
+        .order('created_at', { ascending: false });
+
+    if (limitCount) {
+        query = query.limit(limitCount);
+    }
+
+    const { data, error } = await query;
 
     if (error) {
         throw error;
