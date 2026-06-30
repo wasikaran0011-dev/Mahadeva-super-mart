@@ -92,9 +92,20 @@ function App() {
 
           const isAdminUser = profile?.role === 'admin';
           setIsAdmin(isAdminUser);
+
+          if (location.pathname === '/') {
+            if (isAdminUser) {
+              navigate('/admin/dashboard', { replace: true });
+            } else {
+              navigate('/Home', { replace: true });
+            }
+          }
         } catch (e) {
           console.error('Auth check error:', e);
           setIsAdmin(false);
+          if (location.pathname === '/') {
+            navigate('/Home', { replace: true });
+          }
         } finally {
           setCheckingRole(false);
         }
@@ -110,7 +121,7 @@ function App() {
     return () => {
       subscription.unsubscribe();
     };
-  }, [navigate]);
+  }, [navigate, location.pathname]);
 
   // Block all route rendering until session & role are resolved — prevents Login flash
   if (loading || checkingRole) {
