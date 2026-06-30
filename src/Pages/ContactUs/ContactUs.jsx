@@ -47,8 +47,14 @@ const ContactUs = () => {
       label: 'Email Us',
       value: settings.email || 'mahadevasupermartstore2@gmail.com',
       desc: 'We respond within 24 hours',
-      href: `mailto:${settings.email || 'mahadevasupermartstore2@gmail.com'}`,
+      href: `mailto:${settings.email || 'mahadevasupermartstore2@gmail.com'}?subject=${encodeURIComponent('Customer Support')}&body=${encodeURIComponent('Hello Mahadeva Super Mart,')}`,
       btnText: 'Send Email',
+      onClick: (e) => {
+        e.preventDefault();
+        const targetEmail = settings.email || 'mahadevasupermartstore2@gmail.com';
+        const mailtoLink = `mailto:${targetEmail}?subject=${encodeURIComponent('Customer Support')}&body=${encodeURIComponent('Hello Mahadeva Super Mart,')}`;
+        window.location.href = mailtoLink;
+      }
     },
     {
       icon: '📍',
@@ -105,6 +111,7 @@ const ContactUs = () => {
                     href={method.href}
                     className="cm-btn"
                     {...(method.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                    {...(method.onClick ? { onClick: method.onClick } : {})}
                     aria-label={`${method.btnText} — ${method.label}`}
                   >
                     {method.btnText}
